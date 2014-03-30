@@ -8,7 +8,7 @@
             <li><a href="logout">Cerrar sesión</a></li>
         </ul>
         <ul id="top_right_menu">
-            <li><a href="/carrito" class="carrito"><span class="carrito"></span></a></li>
+            <li><a href="carrito" class="carrito"><span class="carrito"></span></a></li>
         </ul>
     </div>
 </header>

@@ -31,8 +31,6 @@ public class main extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Database db = new Database ();
-        db.CloseConnection ();
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/main_view.jsp");
         rd.forward(request, response);
     }

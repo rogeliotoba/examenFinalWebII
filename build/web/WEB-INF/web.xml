@@ -4,9 +4,17 @@
         <servlet-name>main</servlet-name>
         <servlet-class>app.main</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Access</servlet-name>
+        <servlet-class>app.Access</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Access</servlet-name>
+        <url-pattern>/access</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

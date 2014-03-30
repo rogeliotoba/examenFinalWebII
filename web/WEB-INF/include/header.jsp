@@ -4,17 +4,17 @@
         <ul id="main_menu">
             <li><a href="main">Tienda</a></li>
 
-            <c:if test="${logged_in==true}">
+            <c:if test="${sessionScope.logged_in==true}">
                 <li><a href="perfil">Perfil</a></li>
                 <li><a href="logout">Cerrar sesión</a></li>
             </c:if>
 
             
-            <c:if test="${empty logged_in||logged_in==false}">
+            <c:if test="${empty sessionScope.logged_in||logged_in==false}">
                 <li><a href="access">Login</a></li>
             </c:if>
 
-            <c:if test="${rol==1}">
+            <c:if test="${sessionScope.rol==1}">
                 <li><a href="admin">Administración</a></li>
             </c:if>
         </ul>

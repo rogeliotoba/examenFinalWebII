@@ -31,13 +31,10 @@ public class main extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        
-        request.setAttribute("rol", session.getAttribute("rol"));
-        request.setAttribute("logged_in", session.getAttribute("logged_in"));
-        
+
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/main_view.jsp");
         rd.forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

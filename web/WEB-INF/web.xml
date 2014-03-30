@@ -8,6 +8,10 @@
         <servlet-name>Access</servlet-name>
         <servlet-class>app.Access</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DoLogin</servlet-name>
+        <servlet-class>app.DoLogin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>Access</servlet-name>
         <url-pattern>/access</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DoLogin</servlet-name>
+        <url-pattern>/doLogin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

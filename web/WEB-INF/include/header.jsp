@@ -9,7 +9,8 @@
                 <li><a href="logout">Cerrar sesión</a></li>
             </c:if>
 
-            <c:if test="${logged_in==false}">
+            
+            <c:if test="${empty logged_in||logged_in==false}">
                 <li><a href="access">Login</a></li>
             </c:if>
 

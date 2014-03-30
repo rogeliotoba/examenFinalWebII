@@ -12,5 +12,6 @@ package mikitl;
  */
 public class Database
 {
-    
+    public Database()
+    {}
 }

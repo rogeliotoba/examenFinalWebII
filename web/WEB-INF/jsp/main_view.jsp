@@ -15,7 +15,7 @@
     </head>
     <body>
         <div id="main_container">
-        <%@ include file="../include/header.jsp" %>
+        <%@include file="../include/header.jsp" %>
         
         <div id="main_content">
             <div id="sections_menu">

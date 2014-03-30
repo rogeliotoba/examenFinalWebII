@@ -14,7 +14,7 @@
         <link rel="stylesheet" type="text/css" href="css/access.css">
     </head>
     <body>
-        
+
         <div id="main_container">
             <%@ include file="../include/header.jsp" %>
             <div id="main_content">

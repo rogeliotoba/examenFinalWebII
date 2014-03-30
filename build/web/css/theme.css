@@ -1,0 +1,135 @@
+/* 
+    Document   : theme
+    Created on : 29-mar-2014, 13:34:27
+    Author     : rogeliotorres
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body {
+    margin:0;
+    padding:0;
+    heigt:100%;
+}
+
+#main_container {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+header {
+    background: #104386;
+    overflow: hidden;
+    min-width: 700px;
+}
+
+#header_content {
+    padding: 0 0 0 0.8em;
+}
+
+h1 {
+    color:#e7ecf2;
+    margin:0;
+    padding:0;
+    float:left;
+    font-family: verdana;
+    font-size: 2em;
+}
+
+header #main_menu {
+    margin:0;
+    padding:0 0 0 0.8em;
+    list-style: none;
+    float:left;
+}
+
+header #main_menu li {
+    display:inline-block;
+}
+
+header #main_menu li a {
+    color:#691042;
+    background: #88a2c3;
+    padding: 0.8em;
+    display:block;
+    float:left;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    font-family: arial;
+}
+
+header #top_right_menu {
+    margin:3px 0.8em 0 0;
+    padding: 0;
+    float:right;
+    list-style: none;
+}
+header #top_right_menu a.carrito {
+    display:block;
+    height: 40px;
+    width:40px;
+}
+header #top_right_menu span.carrito {
+    background: url('../img/carrito.png');
+    background-size: 40px 40px;
+    height: 40px;
+    width:40px;
+    display: block;
+    padding:0;
+}
+
+#main_content {
+    height: 100%;
+}
+
+#sections_menu {
+    float:left;
+    height: 100%;
+    border:1px solid #bd8a49;
+    background:#d0dae6;
+    border-top:0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
+#sections_menu ul {
+    list-style: none;
+    margin:0;
+    padding:0.4em 0.4em 0 0;
+    font-family: helvetica;
+}
+
+#sections_menu a {
+    background: #88a2c3;
+    padding:0.8em;
+    float:left;
+    display:block;
+    min-width: 6em;
+    border:1px solid #946c39;
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-left: 0;
+    margin:0.2em 0;
+    color: #690f42;
+}
+
+#sections_menu a:hover {
+    background: #ccc;
+}
+
+.section {
+    width:50%;
+    min-height: 10em;
+    margin:0.1em;
+    overflow: hidden;
+}
+
+.section_content {
+
+    border:1px solid;
+    display: inline-block;
+    margin:0.1em;
+    max-width: 100%;
+}

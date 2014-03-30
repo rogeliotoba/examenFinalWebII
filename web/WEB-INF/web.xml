@@ -12,6 +12,10 @@
         <servlet-name>DoLogin</servlet-name>
         <servlet-class>app.DoLogin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Administration_Main</servlet-name>
+        <servlet-class>administration.Main</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>DoLogin</servlet-name>
         <url-pattern>/doLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Administration_Main</servlet-name>
+        <url-pattern>/Administation/Main</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

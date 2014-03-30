@@ -16,7 +16,7 @@
     <body>
 
         <div id="main_container">
-            <%@ include file="../include/header.jsp" %>
+            <%@include file="../include/header.jsp" %>
             <div id="main_content">
                 <h2>Accesso a tiendeishon</h2>
                 <form id="form_container" action="doLogin" method="POST">

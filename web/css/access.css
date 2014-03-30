@@ -1,0 +1,53 @@
+/* 
+    Document   : login
+    Created on : 30-mar-2014, 13:43:18
+    Author     : rogeliotorres
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body {
+    background: #e7ecf2;
+}
+
+#main_content {
+    width:500px;
+    margin:0 0 0 20%;
+}
+
+h2 {
+    font-family: arial;
+    font-size: 1.5em;
+    margin:1em 0 0 0.5em;
+    padding:0;
+    color:#333;
+}
+
+#form_container {
+    background: #396296;
+    padding:0.9em;
+    color:#eee;
+}
+
+#form_container ul {
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+
+#form_container ul li {
+    background: #172946;
+    margin:0.2em;
+    padding:0.5em;
+    font-family: arial;
+    border:1px solid #1f375f;
+}
+
+#form_container ul label {
+    width:80px;
+    display:inline-block;
+}
+
+#form_container ul input {
+    width:200px;
+}

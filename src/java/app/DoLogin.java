@@ -58,7 +58,7 @@ public class DoLogin extends HttpServlet
                 {
                     session.setAttribute ( "logged_in", true );
                     session.setAttribute ( "user_id", rs.getInt ( "id" ) );
-                    session.setAttribute ( "name", rs.getString ( "name" ) );
+                    session.setAttribute ( "name", rs.getString ( "name" ) + " " + rs.getString ( "lastname") );
                     session.setAttribute ( "rol", rs.getInt ( "rol" ) );
 
                     if ( rs.getInt ( "rol" ) == 1 )

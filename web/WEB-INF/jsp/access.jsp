@@ -19,6 +19,9 @@
             <%@include file="../include/header.jsp" %>
             <div id="main_content">
                 <h2>Accesso a tiendeishon</h2>
+                <c:if test="${param.error==true}">
+                    <p style="background: #d35512; border:1px solid #ccc; font-size: 1em; font-family: verdana; color:#eee; padding: 1em;">Datos de acceso erroneos</p>
+                </c:if>
                 <form id="form_container" action="doLogin" method="POST">
                     <ul>
                         <li>

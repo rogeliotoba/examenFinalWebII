@@ -102,10 +102,13 @@ header #top_right_menu span.carrito {
     font-family: helvetica;
 }
 
+#sections_menu ul li {
+    float:left;
+}
+
 #sections_menu a {
     background: #88a2c3;
     padding:0.8em;
-    float:left;
     display:block;
     min-width: 6em;
     border:1px solid #946c39;

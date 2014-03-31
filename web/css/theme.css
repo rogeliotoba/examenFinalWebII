@@ -104,6 +104,7 @@ header #top_right_menu span.carrito {
 
 #sections_menu ul li {
     float:left;
+    width:100%;
 }
 
 #sections_menu a {
@@ -118,6 +119,7 @@ header #top_right_menu span.carrito {
     border-left: 0;
     margin:0.2em 0;
     color: #690f42;
+    
 }
 
 #sections_menu a:hover {

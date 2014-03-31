@@ -63,7 +63,7 @@ public class DoLogin extends HttpServlet
 
                     if ( rs.getInt ( "rol" ) == 1 )
                     {
-                        response.sendRedirect ( "administation/main" );
+                        response.sendRedirect ( "administration/main" );
                     }
                     else
                     {

@@ -57,8 +57,13 @@ public class DoLogin extends HttpServlet {
                     session.setAttribute("logged_in", true);
                     session.setAttribute("user_id", rs.getInt("id"));
                     session.setAttribute("name", rs.getString("name"));
-                    session.setAttribute("rol", rs.getString("rol"));
-                    response.sendRedirect("main");
+                    session.setAttribute("rol", rs.getInt("rol"));
+                    
+                    if(rs.getInt("rol")==1)
+                    {
+                        response.sendRedirect("administration/main");
+                    }
+                    else response.sendRedirect("main");
                 }
                 else response.sendRedirect("access?error=true");
             } catch (SQLException ex) {

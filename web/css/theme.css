@@ -91,6 +91,8 @@ header #top_right_menu span.carrito {
     border-top:0;
     border-bottom: 0;
     border-left: 0;
+    max-width: 200px;
+    overflow: hidden;
 }
 
 #sections_menu ul {

@@ -7,7 +7,7 @@
             <li><a href="/examenFinalWebII/main">Tienda</a></li>
 
             <c:if test="${sessionScope.logged_in==true&&sessionScope.rol>1}">
-                <li><a href="perfil">Perfil</a></li>
+                <li><a href="/examenFinalWebII/perfil">Perfil</a></li>
             </c:if>
 
             <c:if test="${sessionScope.rol==1}">
@@ -15,11 +15,11 @@
             </c:if>
                 
             <c:if test="${sessionScope.logged_in==true}">
-                <li><a href="logout">Cerrar sesión</a></li>
+                <li><a href="/examenFinalWebII/logout">Cerrar sesión</a></li>
             </c:if>
 
             <c:if test="${empty sessionScope.logged_in||logged_in==false}">
-                <li><a href="access">Login</a></li>
+                <li><a href="/examenFinalWebII/access">Login</a></li>
             </c:if>
 
 

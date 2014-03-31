@@ -15,56 +15,52 @@
     </head>
     <body>
         <div id="main_container">
-        <%@include file="../include/header.jsp" %>
-        
-        <div id="main_content">
-            <div id="sections_menu">
-                <ul >
-                    <li><a href="?departamento=electronica">Electronica</a></li>
-                    <li><a href="?departamento=linea_blanca">Linea blanca</a></li>
-                    <li><a href="?departamento=lalalala">lalala</a></li>
-                </ul>
-            </div>
-            
-            <div id="comercial_content">
-                <c:forEach var="item" items="${lista}" >
-                    <c:out value="${item.id}" />
-                   aaa
-                </c:forEach>
-                <div class="section">
-                    <div class="section_content">
-                        lalalalala alaa sasas
-                    </div>
-                    <div class="section_content">
-                        lalalala asdasdasda dasd asd
-                    </div>
+            <%@include file="../include/header.jsp" %>
+
+            <div id="main_content">
+                <div id="sections_menu">
+                    <ul >
+                        <c:forEach var="department" items="${departments}" >
+                            <li><a href="?department=${department.id}"><c:out value="${department.name}" /></a></li>
+                        </c:forEach>
+                    </ul>
                 </div>
-                <div class="section">
-                    <div class="section_content">
-                        lalalalala alaa sasas
+
+                <div id="comercial_content">
+                    <div class="section">
+                        <div class="section_content">
+                            lalalalala alaa sasas
+                        </div>
+                        <div class="section_content">
+                            lalalala asdasdasda dasd asd
+                        </div>
                     </div>
-                    <div class="section_content">
-                        lalalala asdasdasda dasd asd
+                    <div class="section">
+                        <div class="section_content">
+                            lalalalala alaa sasas
+                        </div>
+                        <div class="section_content">
+                            lalalala asdasdasda dasd asd
+                        </div>
                     </div>
-                </div>
-                <div class="section">
-                    <div class="section_content">
-                        lalalalala alaa sasas
+                    <div class="section">
+                        <div class="section_content">
+                            lalalalala alaa sasas
+                        </div>
+                        <div class="section_content">
+                            lalalala asdasdasda dasd asd
+                        </div>
                     </div>
-                    <div class="section_content">
-                        lalalala asdasdasda dasd asd
-                    </div>
-                </div>
-                <div class="section">
-                    <div class="section_content">
-                        lalalalala alaa sasas
-                    </div>
-                    <div class="section_content">
-                        lalalala asdasdasda dasd asd
+                    <div class="section">
+                        <div class="section_content">
+                            lalalalala alaa sasas
+                        </div>
+                        <div class="section_content">
+                            lalalala asdasdasda dasd asd
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </body>
 </html>

@@ -13,6 +13,10 @@
         <servlet-class>app.DoLogin</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>LogOut</servlet-name>
+        <servlet-class>app.LogOut</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Administration_Main</servlet-name>
         <servlet-class>administration.Main</servlet-class>
     </servlet>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>Administration_Main</servlet-name>
         <url-pattern>/administration/main</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogOut</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

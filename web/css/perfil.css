@@ -1,0 +1,23 @@
+/* 
+    Document   : perfil
+    Created on : 30-mar-2014, 19:48:11
+    Author     : rogeliotorres
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+.line {
+    overflow: hidden;
+    border:1px solid #ccc;
+}
+
+.left_container {
+    float:left;
+    width:150px;
+}
+
+.rigth_container {
+    float:right;
+    width:150px;
+}

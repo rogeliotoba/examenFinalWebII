@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
     <div id="header_content">
         <h1>Tiendeishon</h1>
@@ -9,7 +10,7 @@
                 <li><a href="logout">Cerrar sesión</a></li>
             </c:if>
 
-            
+
             <c:if test="${empty sessionScope.logged_in||logged_in==false}">
                 <li><a href="access">Login</a></li>
             </c:if>

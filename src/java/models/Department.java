@@ -9,8 +9,8 @@ package models;
  * @author rogeliotorres
  */
 public class Department {
-    public int id;
-    public String name;
+    private int id;
+    private String name;
 
     public int getId() {
         return id;

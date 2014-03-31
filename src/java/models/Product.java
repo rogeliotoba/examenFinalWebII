@@ -9,12 +9,12 @@ package models;
  * @author rogeliotorres
  */
 public class Product {
-    public int id;
-    public int deparmentId;
-    public String deparmentName;
-    public String name;
-    public String description;
-    public float price;
+    private int id;
+    private int deparmentId;
+    private String deparmentName;
+    private String name;
+    private String description;
+    private float price;
 
     public int getId() {
         return id;

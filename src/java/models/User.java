@@ -9,16 +9,16 @@ package models;
  * @author rogeliotorres
  */
 public class User {
-    public int id;
-    public String name;
-    public String lastName;
-    public String address;
-    public String postalCode;
-    public String phone;
-    public String email;
-    public String username;
-    public String password;
-    public int rol;
+    private int id;
+    private String name;
+    private String lastName;
+    private String address;
+    private String postalCode;
+    private String phone;
+    private String email;
+    private String username;
+    private String password;
+    private int rol;
 
     public int getId() {
         return id;

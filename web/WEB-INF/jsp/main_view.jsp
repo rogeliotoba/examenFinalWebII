@@ -27,6 +27,10 @@
             </div>
             
             <div id="comercial_content">
+                <c:forEach var="item" items="${lista}" >
+                    <c:out value="${item.id}" />
+                   aaa
+                </c:forEach>
                 <div class="section">
                     <div class="section_content">
                         lalalalala alaa sasas

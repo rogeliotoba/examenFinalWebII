@@ -45,19 +45,19 @@ public class Main extends HttpServlet
             if ( session.getAttribute ( "rol" ).equals ( 1 ) )
             {
                 RequestDispatcher rd = null;
-                if ( request.getParameter ("section" ) != null )
+                if ( request.getParameter ( "section" ) != null )
                 {
                     switch ( request.getParameter ( "section" ) )
                     {
                         case "Profile":
-                            Profile ( session, request );
+                            Profile ( session, request, response );
                             rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/profile.jsp" );
                             break;
                     }
                 }
                 else
                 {
-                    Profile ( session, request );
+                    Profile ( session, request, response );
                     rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/profile.jsp" );
                 }
 
@@ -116,7 +116,7 @@ public class Main extends HttpServlet
         return "Short description";
     }// </editor-fold>
 
-    private void Profile ( HttpSession session, HttpServletRequest request )
+    private void Profile ( HttpSession session, HttpServletRequest request, HttpServletResponse response )
     {
         User user = new User ();
         Database db = new Database ();
@@ -126,6 +126,57 @@ public class Main extends HttpServlet
         {
             session.getAttribute ( "user_id" )
         };
+
+        if ( request.getParameter ( "user_email" ) != null )
+        {
+            if ( request.getParameter ( "new_password" ).equals ( request.getParameter ( "new_password2" ) ) )
+            {
+                int postalcode = Integer.parseInt ( request.getParameter ( "user_postalCode" ) );
+                String update;
+                Object[] update_args;
+                if ( !request.getParameter ( "new_password" ).isEmpty () )
+                {
+                    update = "UPDATE Users "
+                            + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ?, Password = ? "
+                            + "WHERE Id = ?";
+
+                    update_args = new Object[]
+                    {
+                        request.getParameter ( "user_name" ),
+                        request.getParameter ( "user_lastname" ),
+                        request.getParameter ( "user_address" ),
+                        postalcode,
+                        request.getParameter ( "user_phone" ),
+                        request.getParameter ( "user_email" ),
+                        request.getParameter ( "new_password" ),
+                        session.getAttribute ( "user_id" )
+                    };
+                }
+                else
+                {
+                    update = "UPDATE Users "
+                            + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ? "
+                            + "WHERE Id = ?";
+
+                    update_args = new Object[]
+                    {
+                        request.getParameter ( "user_name" ),
+                        request.getParameter ( "user_lastname" ),
+                        request.getParameter ( "user_address" ),
+                        postalcode,
+                        request.getParameter ( "user_phone" ),
+                        request.getParameter ( "user_email" ),
+                        session.getAttribute ( "user_id" )
+                    };
+                }
+                db.ExecUpdate ( update, update_args );
+                request.setAttribute ( "invalid_new_password", false );
+            }
+            else
+            {
+                request.setAttribute ( "invalid_new_password", true );
+            }
+        }
 
         rs = db.ExecQuery ( query, args );
         try

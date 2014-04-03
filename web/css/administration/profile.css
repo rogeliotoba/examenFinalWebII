@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 1, 2014, 10:45:46 AM
+    Author     : Armando
+*/
+@import url('http://fonts.googleapis.com/css?family=Open+Sans');
+
+
+#profileContent{
+    font-family:'Open Sans';
+    overflow: hidden;
+    /* padding-left: 25px; */
+    padding: 25px;
+}
+
+#photoPanel{
+    float: left;
+}
+
+#dataPanel{
+    float: left;
+    padding-left: 15px;
+}
+
+#dataPanel table{
+    text-align: right;
+}
+

@@ -5,19 +5,44 @@
     Description:
         Purpose of the stylesheet follows.
 */
-
+#lines {
+    float:left;
+    width:220px;
+}
 
 .line {
     overflow: hidden;
-    border:1px solid #ccc;
+    padding:0.8em;
 }
 
 .left_container {
     float:left;
-    width:150px;
+    min-width:150px;
+    display:block;
+    width:200px;
+    background: #eee;
 }
 
 .rigth_container {
-    float:right;
+    float:leftt;
     width:150px;
+    display:block;
+    width:200px;
+}
+
+.rigth_container input {
+    display:none;
+}
+
+#btn_save {
+    display: none;
+}
+
+button {
+    border:1px solid #ccc;
+    background: #36659e;
+    border-radius: 6px;
+    color:#eee;
+    font-size: 0.9em;
+    margin:5px 0;
 }

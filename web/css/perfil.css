@@ -5,6 +5,10 @@
     Description:
         Purpose of the stylesheet follows.
 */
+#main_content {
+    padding:0.4em;
+}
+
 #lines {
     float:left;
     width:220px;
@@ -25,6 +29,8 @@
     display:block;
     width:200px;
     background: #eee;
+    font-family: verdana;
+    font-size: 1em;
 }
 
 .rigth_container {
@@ -32,6 +38,8 @@
     width:150px;
     display:block;
     width:200px;
+    font-family: arial;
+    font-size: 0.9em;
 }
 
 .rigth_container input {

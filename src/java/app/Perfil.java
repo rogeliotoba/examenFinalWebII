@@ -4,6 +4,7 @@
  */
 package app;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -70,7 +72,13 @@ public class Perfil extends HttpServlet {
                 
                 request.setAttribute("user", user);
                 
-                request.setAttribute("userPhoto", "no-profile.jpg");
+                ServletContext context = session.getServletContext();
+                String virtualPath = "img/users/"+String.valueOf(user.getId())+".jpg";
+                String realPath = context.getRealPath(virtualPath);
+                File fichero = new File(realPath);
+            
+                if(fichero.exists()) request.setAttribute("userPhoto", String.valueOf(user.getId())+".jpg");
+                else request.setAttribute("userPhoto", "no-profile.jpg");
                 
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/perfil.jsp");
                 rd.forward(request, response);

@@ -71,7 +71,7 @@ header #top_right_menu a.carrito {
     width:40px;
 }
 header #top_right_menu span.carrito {
-    background: url('../img/carrito.png');
+    background: url('/examenFinalWebII/img/carrito.png');
     background-size: 40px 40px;
     height: 40px;
     width:40px;

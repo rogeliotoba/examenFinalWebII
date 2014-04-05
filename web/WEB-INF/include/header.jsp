@@ -24,8 +24,10 @@
 
 
         </ul>
-        <ul id="top_right_menu">
-            <li><a href="carrito" class="carrito"><span class="carrito"></span></a></li>
-        </ul>
+        <c:if test="${sessionScope.logged_in==true}">
+            <ul id="top_right_menu">
+                <li><a href="carrito" class="carrito"><span class="carrito"></span></a></li>
+            </ul>
+        </c:if>
     </div>
 </header>

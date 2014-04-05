@@ -43,6 +43,7 @@
             <div id="main_content">
                 
                 <div id="lines">
+                    <img src="img/users/${userPhoto}" />
                     <div class="line">
                         <div class="left_container">
                             <label>Nombre</label>

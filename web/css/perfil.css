@@ -10,6 +10,10 @@
     width:220px;
 }
 
+#lines img {
+    width:96%;
+}
+
 .line {
     overflow: hidden;
     padding:0.8em;
@@ -32,6 +36,7 @@
 
 .rigth_container input {
     display:none;
+    width:97%;
 }
 
 #btn_save {

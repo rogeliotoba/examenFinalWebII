@@ -70,6 +70,8 @@ public class Perfil extends HttpServlet {
                 
                 request.setAttribute("user", user);
                 
+                request.setAttribute("userPhoto", "no-profile.jpg");
+                
                 RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/perfil.jsp");
                 rd.forward(request, response);
                 

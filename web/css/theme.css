@@ -125,18 +125,3 @@ header #top_right_menu span.carrito {
 #sections_menu a:hover {
     background: #ccc;
 }
-
-.section {
-    width:50%;
-    min-height: 10em;
-    margin:0.1em;
-    overflow: hidden;
-}
-
-.section_content {
-
-    border:1px solid;
-    display: inline-block;
-    margin:0.1em;
-    max-width: 100%;
-}

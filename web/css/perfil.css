@@ -47,6 +47,15 @@
     width:97%;
 }
 
+#frm_cambiar_imagen {
+    display:none;
+}
+
+#lbl_cambiar_imagen {
+    font-family: arial;
+    font-size: 0.8em;
+} 
+
 #btn_save {
     display: none;
 }

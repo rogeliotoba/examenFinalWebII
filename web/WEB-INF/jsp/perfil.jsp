@@ -24,6 +24,7 @@
                         $(this).text('Cancelar edición');
                         $(this).val('Cancelar edición');
                         $('#btn_save').css('display','inline');
+                        $('#frm_cambiar_imagen').css('display','inline');
                     }
                     else
                     {
@@ -32,6 +33,7 @@
                         $(this).val('Editar datos');
                         $(this).text('Editar datos');
                         $('#btn_save').css('display','none');
+                        $('#frm_cambiar_imagen').css('display','none');
                     }
                 });
             })
@@ -44,6 +46,10 @@
                 
                 <div id="lines">
                     <img src="img/users/${userPhoto}" />
+                    <form id="frm_cambiar_imagen" method="POST" action="cambiarImagenPerfil?id=${user.id}" enctype="multipart/form-data">
+                        <label id="lbl_cambiar_imagen">Cambiar imagen</label><br /><input type="file" name="imagen" id="i_imagen">
+                        <button>Cambiar imagen</button>
+                    </form>
                     <div class="line">
                         <div class="left_container">
                             <label>Nombre</label>

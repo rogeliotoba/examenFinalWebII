@@ -24,6 +24,10 @@
         <servlet-name>Perfil</servlet-name>
         <servlet-class>app.Perfil</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>cambiarImagenPerfil</servlet-name>
+        <servlet-class>app.cambiarImagenPerfil</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>Perfil</servlet-name>
         <url-pattern>/perfil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>cambiarImagenPerfil</servlet-name>
+        <url-pattern>/cambiarImagenPerfil</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

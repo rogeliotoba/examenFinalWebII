@@ -13,6 +13,7 @@
         <title>Administracion - Mi Perfil</title>
         <link rel="stylesheet" type="text/css" href="../css/theme.css">
         <link rel="stylesheet" type="text/css" href="../css/administration/departments.css">
+        <script src="js/jquery.js"></script>
     </head>
     <body>
         <div id="main_container">
@@ -29,7 +30,8 @@
                             </td>
                         <form method="post" action="?section=Departments">
                             <td>
-                                <select name="departmentStatus">
+                                <select name="departmentStatus" onchange="if (this.value)
+                                            window.location.href = 'main?section=Departments&departmentStatus=' + this.value">
                                     <c:choose>
                                         <c:when test="${departmentStatus == 1 || empty departmentStatus}">
                                             <option value="1">Activos</option>

@@ -20,6 +20,8 @@
             <div id="main_content">
                 <%@include file="include/menu_lateral.jsp" %>
                 <div id="profileContent">
+                    <h2>Mi Perfil</h2>
+                    <hr>
                     <c:if test="${invalid_new_password == true}">
                         <h4 style="color: red;"><b>La nueva contrase&ntilde;a NO coincide!<br> Porfavor vuelva a ingresarla.</b></h4>
 

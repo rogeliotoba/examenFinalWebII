@@ -8,24 +8,40 @@ package models;
  *
  * @author rogeliotorres
  */
-public class Department {
+public class Department
+{
+
     private int id;
     private String name;
+    private int active;
 
-    public int getId() {
+    public int getId ()
+    {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId ( int id )
+    {
         this.id = id;
     }
 
-    public String getName() {
+    public String getName ()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName ( String name )
+    {
         this.name = name;
     }
-    
+
+    public int getActive ()
+    {
+        return active;
+    }
+
+    public void setActive ( int active )
+    {
+        this.active = active;
+    }
 }

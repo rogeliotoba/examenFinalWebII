@@ -9,6 +9,8 @@ import app.Database;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -25,6 +27,8 @@ import models.User;
  */
 public class Main extends HttpServlet
 {
+
+    private boolean foward = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,18 +54,51 @@ public class Main extends HttpServlet
                     switch ( request.getParameter ( "section" ) )
                     {
                         case "Profile":
-                            Profile ( session, request, response );
+                            Profile ( session, request );
+                            foward = true;
                             rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/profile.jsp" );
+                            break;
+
+                        case "Departments":
+                            Departments ( request );
+                            foward = true;
+                            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/departments.jsp" );
+                            break;
+
+                        case "AddDepartment":
+                            if ( request.getParameter ( "departmentName" ) != null )
+                            {
+                                AddDepartment ( request, response );
+                                foward = false;
+                            }
+                            else
+                            {
+                                foward = true;
+                            }
+                            break;
+
+                        case "activeDepartment":
+                        case "deleteDepartment":
+                            if ( request.getParameter ( "derpartmentId" ) != null )
+                            {
+                                StatusDepartment ( request, response );
+                                
+                            }
+                            foward = false;
                             break;
                     }
                 }
                 else
                 {
-                    Profile ( session, request, response );
+                    Profile ( session, request );
+                    foward = true;
                     rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/profile.jsp" );
                 }
 
-                rd.forward ( request, response );
+                if ( foward )
+                {
+                    rd.forward ( request, response );
+                }
             }
             else
             {
@@ -116,7 +153,7 @@ public class Main extends HttpServlet
         return "Short description";
     }// </editor-fold>
 
-    private void Profile ( HttpSession session, HttpServletRequest request, HttpServletResponse response )
+    private void Profile ( HttpSession session, HttpServletRequest request )
     {
         User user = new User ();
         Database db = new Database ();
@@ -192,5 +229,124 @@ public class Main extends HttpServlet
         }
         db.CloseConnection ();
         request.setAttribute ( "user_profile", user );
+    }
+
+    private void Departments ( HttpServletRequest request )
+    {
+        List<String[]> departments = new ArrayList<String[]> ();
+        Database db = new Database ();
+        ResultSet rs;
+        String query;
+
+        query = "SELECT * FROM vw_departments\n"
+                + "WHERE Status = ?;";
+
+        int status;
+        if ( request.getParameter ( "departmentStatus" ) == null )
+        {
+            status = 1;
+        }
+        else
+        {
+            status = Integer.parseInt ( request.getParameter ( "departmentStatus" ) );
+        }
+
+        try
+        {
+            rs = db.ExecQuery ( query, new Object[]
+            {
+                status
+            } );
+            while ( rs.next () )
+            {
+                departments.add ( new String[]
+                {
+                    Integer.toString ( rs.getInt ( 1 ) ), rs.getString ( 2 ), Integer.toString ( rs.getInt ( 3 ) ), Integer.toString ( rs.getInt ( 4 ) )
+                } );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
+        db.CloseConnection ();
+        request.setAttribute ( "departments", departments );
+        request.setAttribute ( "departmentStatus", status );
+    }
+
+    private void AddDepartment ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query = "INSERT INTO Departments (Name) VALUES (?)";
+        Object[] args = new Object[]
+        {
+            request.getParameter ( "departmentName" )
+        };
+
+        try
+        {
+            db.ExecUpdate ( query, args );
+            response.sendRedirect ( "main?section=Departments" );
+        }
+        catch ( Exception ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
+
+        db.CloseConnection ();
+    }
+
+    private void StatusDepartment ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        int id = Integer.parseInt ( request.getParameter ( "derpartmentId" ) );
+        int products = 1;
+        String query;
+        ResultSet rs;
+
+        try
+        {
+            if ( request.getParameter ( "section" ).equals ( "deleteDepartment" ) )
+            {
+                query = "SELECT * FROM vw_departments\n"
+                        + "WHERE Id = ?;";
+                rs = db.ExecQuery ( query, new Object[]
+                {
+                    id
+                } );
+                while ( rs.next () )
+                {
+                    products = rs.getInt ( 3 );
+                }
+                if ( products == 0 )
+                {
+                    query = "UPDATE Departments SET Active = ? WHERE Id = ?";
+                    db.ExecUpdate ( query, new Object[]
+                    {
+                        0, id
+                    } );
+                    response.sendRedirect ( "main?section=Departments&departmentStatus=1" );
+                }
+            }
+            else
+            {
+                query = "UPDATE Departments SET Active = ? WHERE Id = ?";
+                db.ExecUpdate ( query, new Object[]
+                {
+                    1, id
+                } );
+                response.sendRedirect ( "main?section=Departments&departmentStatus=0" );
+            }
+
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
+        catch ( IOException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
+        db.CloseConnection ();
     }
 }

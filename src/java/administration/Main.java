@@ -69,12 +69,8 @@ public class Main extends HttpServlet
                             if ( request.getParameter ( "departmentName" ) != null )
                             {
                                 AddDepartment ( request, response );
-                                foward = false;
                             }
-                            else
-                            {
-                                foward = true;
-                            }
+                            foward = false;
                             break;
 
                         case "activeDepartment":
@@ -82,10 +78,26 @@ public class Main extends HttpServlet
                             if ( request.getParameter ( "derpartmentId" ) != null )
                             {
                                 StatusDepartment ( request, response );
-                                
+
                             }
                             foward = false;
                             break;
+
+                        case "Products":
+                            foward = true;
+                            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/products.jsp" );
+                            break;
+
+                        case "Clients":
+                            foward = true;
+                            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/clients.jsp" );
+                            break;
+
+                        case "AdminUsers":
+                            foward = true;
+                            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_users.jsp" );
+                            break;
+
                     }
                 }
                 else

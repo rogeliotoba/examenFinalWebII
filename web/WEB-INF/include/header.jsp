@@ -1,3 +1,6 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="javax.servlet.http.HttpSession"%>
+<%@page import="app.Database"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
     <div id="header_content">
@@ -26,7 +29,24 @@
         </ul>
         <c:if test="${sessionScope.logged_in==true}">
             <ul id="top_right_menu">
-                <li><a href="carrito" class="carrito"><span class="carrito"></span></a></li>
+                <%
+                    
+                    Database db = new Database();
+                    Integer user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+                    Object args[] = {
+                        user_id
+                    };
+                    ResultSet rs = db.ExecQuery("Select count(ProductId) as cuenta from ShoppingCart where UserId = ?", args);
+                    int cuenta = 0;
+                    if(rs!=null)
+                    {
+                        rs.next();
+                        cuenta = rs.getInt("cuenta");
+                    }
+                    pageContext.setAttribute("cuenta", cuenta);
+                    db.CloseConnection();
+                %>
+                <li><c:out value="${cuenta}" /><a href="/examenFinalWebII/carrito" class="carrito"><span class="carrito"></span></a></li>
             </ul>
         </c:if>
     </div>

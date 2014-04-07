@@ -1,0 +1,54 @@
+/* 
+    Document   : carrito
+    Created on : 06-abr-2014, 20:13:33
+    Author     : rogeliotorres
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#main_content {
+    padding: 0.5em;
+}
+
+h2 {
+    font-family: helvetica;
+    font-size: 1.5em;
+    margin:0.9em 0;
+    color:#4B3434;
+}
+
+table {
+    border:1px solid #c7c4d0;
+    border-radius: 6px;
+    background: #eee;
+}
+
+table img {
+    max-width: 150px;
+}
+
+table td {
+    width: 14%;
+}
+
+thead {
+    background: #b9cbe6;
+    font-family: verdana;
+    font-size: 1.1em;
+}
+
+tbody{
+    font-family: arial;
+    font-size: 1em;
+}
+
+tbody td {
+    border-bottom: 1px solid #c7c4d0;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    background: #fff;
+}
+
+thead td {
+    padding: 0.8em;
+}

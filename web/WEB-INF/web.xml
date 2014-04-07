@@ -32,6 +32,10 @@
         <servlet-name>cambiarDatosDePerfil</servlet-name>
         <servlet-class>app.cambiarDatosDePerfil</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Carrito</servlet-name>
+        <servlet-class>app.Carrito</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>cambiarDatosDePerfil</servlet-name>
         <url-pattern>/cambiarDatosDePerfil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Carrito</servlet-name>
+        <url-pattern>/carrito</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

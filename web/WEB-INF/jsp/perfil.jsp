@@ -36,6 +36,10 @@
                         $('#frm_cambiar_imagen').css('display','none');
                     }
                 });
+                
+                $('#btn_save').click(function(){
+                    $('#frm_cambiar_datos').submit();
+                });
             })
         </script>
     </head>
@@ -50,55 +54,58 @@
                         <label id="lbl_cambiar_imagen">Cambiar imagen</label><br /><input type="file" name="imagen" id="i_imagen">
                         <button>Cambiar imagen</button>
                     </form>
-                    <div class="line">
-                        <div class="left_container">
-                            <label>Nombre</label>
+                        
+                    <form action="cambiarDatosDePerfil?id=${user.id}" method="POST" id="frm_cambiar_datos">
+                        <div class="line">
+                            <div class="left_container">
+                                <label>Nombre</label>
+                            </div>
+                            <div class="rigth_container">
+                                <h2><c:out value="${user.name}" /></h2>
+                                <input id="txt_name" value="${user.name}" name="name" />
+                            </div>
                         </div>
-                        <div class="rigth_container">
-                            <h2><c:out value="${user.name}" /></h2>
-                            <input id="txt_name" value="${user.name}" />
-                        </div>
-                    </div>
 
-                    <div class="line">
-                        <div class="left_container">
-                            <label>Appellidos</label>
+                        <div class="line">
+                            <div class="left_container">
+                                <label>Appellidos</label>
+                            </div>
+                            <div class="rigth_container">
+                                <label><c:out value="${user.lastName}" /></label>
+                                <input id="txt_last_name" value="${user.lastName}" name="lastName" />
+                            </div>
                         </div>
-                        <div class="rigth_container">
-                            <label><c:out value="${user.lastName}" /></label>
-                            <input id="txt_last_name" value="${user.lastName}" />
-                        </div>
-                    </div>
 
-                    <div class="line">
-                        <div class="left_container">
-                            <label>Dirección</label>
+                        <div class="line">
+                            <div class="left_container">
+                                <label>Dirección</label>
+                            </div>
+                            <div class="rigth_container">
+                                <label><c:out value="${user.address}" /></label>
+                                <input id="txt_address" value="${user.address}" name="address" />
+                            </div>
                         </div>
-                        <div class="rigth_container">
-                            <label><c:out value="${user.address}" /></label>
-                            <input id="txt_address" value="${user.address}" />
-                        </div>
-                    </div>
 
-                    <div class="line">
-                        <div class="left_container">
-                            <label>CP</label>
+                        <div class="line">
+                            <div class="left_container">
+                                <label>CP</label>
+                            </div>
+                            <div class="rigth_container">
+                                <label><c:out value="${user.postalCode}" /></label>
+                                <input id="txt_cp" value="${user.postalCode}" name="postalCode" />
+                            </div>
                         </div>
-                        <div class="rigth_container">
-                            <label><c:out value="${user.postalCode}" /></label>
-                            <input id="txt_cp" value="${user.postalCode}" />
-                        </div>
-                    </div>
 
-                    <div class="line">
-                        <div class="left_container">
-                            <label>Telefono</label>
+                        <div class="line">
+                            <div class="left_container">
+                                <label>Telefono</label>
+                            </div>
+                            <div class="rigth_container">
+                                <label><c:out value="${user.phone}" /></label>
+                                <input id="txt_phone" value="${user.phone}" name="phone"/>
+                            </div>
                         </div>
-                        <div class="rigth_container">
-                            <label><c:out value="${user.phone}" /></label>
-                            <input id="txt_phone" value="${user.phone}" />
-                        </div>
-                    </div>
+                    </form>
                 </div>
                 
                 <div id="options">

@@ -108,6 +108,12 @@ public class Main extends HttpServlet
                             }
                             break;
 
+                        case "AddProduct":
+                        case "EditProduct":
+                            AddUpdateProduct ( request, response );
+                            foward = false;
+                            break;
+
                         case "Clients":
                             foward = true;
                             rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/clients.jsp" );
@@ -411,7 +417,7 @@ public class Main extends HttpServlet
                 {
                     Product tmp = new Product ();
                     tmp.setId ( rs.getInt ( "Id" ) );
-                    tmp.setDepartmentId (rs.getInt ( "DepartmentId" ) );
+                    tmp.setDepartmentId ( rs.getInt ( "DepartmentId" ) );
                     tmp.setName ( rs.getString ( "Name" ) );
                     tmp.setDescription ( rs.getString ( "Description" ).trim () );
                     tmp.setPrice ( rs.getFloat ( "Price" ) );
@@ -436,7 +442,7 @@ public class Main extends HttpServlet
         String query;
         ResultSet rs;
         List<Department> departments = new ArrayList<> ();
-        
+
         query = "SELECT * FROM Departments Where Active = 1";
         rs = db.ExecQuery ( query, null );
         try
@@ -478,7 +484,7 @@ public class Main extends HttpServlet
             while ( rs.next () )
             {
                 tmp.setId ( rs.getInt ( "Id" ) );
-                tmp.setDepartmentId (rs.getInt ( "DepartmentId" ) );
+                tmp.setDepartmentId ( rs.getInt ( "DepartmentId" ) );
                 tmp.setName ( rs.getString ( "Name" ) );
                 tmp.setDescription ( rs.getString ( "Description" ).trim () );
                 tmp.setPrice ( rs.getFloat ( "Price" ) );
@@ -492,5 +498,55 @@ public class Main extends HttpServlet
         }
         db.CloseConnection ();
         request.setAttribute ( "product", tmp );
+    }
+
+    private void AddUpdateProduct ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query;
+        Object[] args;
+
+        if ( request.getParameter ( "productId" ) == null )
+        {
+            query = "INSERT INTO Products VALUES (?,?,?,?,?,?)";
+            args = new Object[]
+            {
+                Integer.parseInt ( request.getParameter ( "productDepartment" ) ),
+                request.getParameter ( "productName" ).trim (),
+                request.getParameter ( "productDescription" ).trim (),
+                Float.parseFloat ( request.getParameter ( "productPrice" ) ),
+                Integer.parseInt ( request.getParameter ( "productQuantity" ) ),
+                Integer.parseInt ( request.getParameter ( "productStatus" ) )
+            };
+
+            db.ExecUpdate ( query, args );
+        }
+        else
+        {
+            query = "UPDATE Products "
+                    + "SET DepartmentId = ?, Name = ?, Description = ?, Price = ?, Quantity = ?, Active = ? "
+                    + "Where Id = ?";
+            args = new Object[]
+            {
+                Integer.parseInt ( request.getParameter ( "productDepartment" ) ),
+                request.getParameter ( "productName" ).trim (),
+                request.getParameter ( "productDescription" ).trim (),
+                Float.parseFloat ( request.getParameter ( "productPrice" ) ),
+                Integer.parseInt ( request.getParameter ( "productQuantity" ) ),
+                Integer.parseInt ( request.getParameter ( "productStatus" ) ),
+                Integer.parseInt ( request.getParameter ( "productId" ) )
+            };
+            
+            db.ExecUpdate ( query, args );
+        }
+
+        try
+        {
+            response.sendRedirect ( "main?section=Products&department=" + request.getParameter ( "productLastDepartment") );
+        }
+        catch ( IOException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
     }
 }

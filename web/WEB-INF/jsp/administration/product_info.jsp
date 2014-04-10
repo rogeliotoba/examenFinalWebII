@@ -47,7 +47,8 @@
                                     <tr>
                                         <td>Id:</td>
                                         <td>
-                                            <input type="text" name="poductId" value="${product.id}" readonly/>
+                                            <input type="text" name="productId" value="${product.id}" readonly hidden/>
+                                            <c:out value="${product.id}"/>
                                         </td>
                                     </tr>
                                 </c:if>
@@ -60,7 +61,8 @@
                                 <tr>
                                     <td>Departamento:</td>
                                     <td>
-                                        <select style="float: left;" name="department" >
+                                        <input type="text" name="productLastDepartment" value="${product.departmentId}" readonly hidden/>
+                                        <select style="float: left;" name="productDepartment" >
                                             <c:forEach var="object" items="${departments}">
                                                 <c:choose>
                                                     <c:when test="${product.departmentId == object.id}">
@@ -94,13 +96,13 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${true == product.active}">
-                                                <select name="productEstatus">
+                                                <select name="productStatus">
                                                     <option value="1" selected>Activo</option>
                                                     <option value="0">Inactivo</option>
                                                 </select>
                                             </c:when>
                                             <c:otherwise>
-                                                <select name="productEstatus">
+                                                <select name="productStatus">
                                                     <option value="1">Activo</option>
                                                     <option value="0" selected>Inactivo</option>
                                                 </select>

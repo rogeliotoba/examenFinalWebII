@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Department;
+import models.Product;
 import models.User;
 
 /**
@@ -84,8 +86,26 @@ public class Main extends HttpServlet
                             break;
 
                         case "Products":
-                            foward = true;
-                            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/products.jsp" );
+                            if ( request.getParameter ( "add" ) != null && request.getParameter ( "add" ).equals ( "true" ) )
+                            {
+                                foward = true;
+                                ListDepartments ( request, response );
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/product_info.jsp" );
+                            }
+                            else if ( request.getParameter ( "edit" ) != null )
+                            {
+                                ProductoInfo ( request, response );
+                                ListDepartments ( request, response );
+                                foward = true;
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/product_info.jsp" );
+                            }
+                            else
+                            {
+                                Products ( request, response );
+                                ListDepartments ( request, response );
+                                foward = true;
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/products.jsp" );
+                            }
                             break;
 
                         case "Clients":
@@ -238,6 +258,7 @@ public class Main extends HttpServlet
         catch ( SQLException ex )
         {
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
         }
         db.CloseConnection ();
         request.setAttribute ( "user_profile", user );
@@ -280,6 +301,7 @@ public class Main extends HttpServlet
         catch ( SQLException ex )
         {
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
         }
         db.CloseConnection ();
         request.setAttribute ( "departments", departments );
@@ -303,6 +325,7 @@ public class Main extends HttpServlet
         catch ( Exception ex )
         {
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
         }
 
         db.CloseConnection ();
@@ -354,11 +377,120 @@ public class Main extends HttpServlet
         catch ( SQLException ex )
         {
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
         }
         catch ( IOException ex )
         {
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
         }
         db.CloseConnection ();
+    }
+
+    private void Products ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query;
+        String department;
+        ResultSet rs;
+        List<Product> products = new ArrayList<> ();
+
+        if ( request.getParameter ( "department" ) != null )
+        {
+            department = request.getParameter ( "department" );
+            query = "SELECT * FROM Products"
+                    + " Where DepartmentId = ?";
+
+            rs = db.ExecQuery ( query, new Object[]
+            {
+                Integer.parseInt ( department )
+            } );
+            try
+            {
+                while ( rs.next () )
+                {
+                    Product tmp = new Product ();
+                    tmp.setId ( rs.getInt ( "Id" ) );
+                    tmp.setDepartmentId (rs.getInt ( "DepartmentId" ) );
+                    tmp.setName ( rs.getString ( "Name" ) );
+                    tmp.setDescription ( rs.getString ( "Description" ).trim () );
+                    tmp.setPrice ( rs.getFloat ( "Price" ) );
+                    tmp.setQuantity ( rs.getInt ( "Quantity" ) );
+                    tmp.setActive ( rs.getBoolean ( "Active" ) );
+                    products.add ( tmp );
+                }
+            }
+            catch ( SQLException ex )
+            {
+                Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+                db.CloseConnection ();
+            }
+        }
+        db.CloseConnection ();
+        request.setAttribute ( "products", products );
+    }
+
+    private void ListDepartments ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query;
+        ResultSet rs;
+        List<Department> departments = new ArrayList<> ();
+        
+        query = "SELECT * FROM Departments Where Active = 1";
+        rs = db.ExecQuery ( query, null );
+        try
+        {
+            while ( rs.next () )
+            {
+                Department tmp = new Department ();
+                tmp.setId ( rs.getInt ( "Id" ) );
+                tmp.setName ( rs.getString ( "Name" ) );
+                tmp.setActive ( rs.getInt ( "Active" ) );
+                departments.add ( tmp );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
+        }
+        db.CloseConnection ();
+        request.setAttribute ( "departments", departments );
+    }
+
+    private void ProductoInfo ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query;
+        String id;
+        ResultSet rs;
+        Product tmp = new Product ();
+
+        id = request.getParameter ( "edit" );
+        query = "SELECT * FROM Products WHERE Id = ?";
+        rs = db.ExecQuery ( query, new Object[]
+        {
+            Integer.parseInt ( id )
+        } );
+        try
+        {
+            while ( rs.next () )
+            {
+                tmp.setId ( rs.getInt ( "Id" ) );
+                tmp.setDepartmentId (rs.getInt ( "DepartmentId" ) );
+                tmp.setName ( rs.getString ( "Name" ) );
+                tmp.setDescription ( rs.getString ( "Description" ).trim () );
+                tmp.setPrice ( rs.getFloat ( "Price" ) );
+                tmp.setQuantity ( rs.getInt ( "Quantity" ) );
+                tmp.setActive ( rs.getBoolean ( "Active" ) );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
+        db.CloseConnection ();
+        request.setAttribute ( "product", tmp );
     }
 }

@@ -10,11 +10,13 @@ package models;
  */
 public class Product {
     private int id;
-    private int deparmentId;
-    private String deparmentName;
+    private int departmentId;
+    private String departmentName;
     private String name;
     private String description;
     private float price;
+    private int quantity;
+    private boolean active;
 
     public int getId() {
         return id;
@@ -24,20 +26,20 @@ public class Product {
         this.id = id;
     }
 
-    public int getDeparmentId() {
-        return deparmentId;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDeparmentId(int deparmentId) {
-        this.deparmentId = deparmentId;
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public String getDeparmentName() {
-        return deparmentName;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDeparmentName(String deparmentName) {
-        this.deparmentName = deparmentName;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     public String getName() {
@@ -62,6 +64,26 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public int getQuantity ()
+    {
+        return quantity;
+    }
+
+    public void setQuantity ( int quantity )
+    {
+        this.quantity = quantity;
+    }
+
+    public boolean isActive ()
+    {
+        return active;
+    }
+
+    public void setActive ( boolean active )
+    {
+        this.active = active;
     }
     
 }

@@ -30,7 +30,7 @@
         <c:if test="${sessionScope.logged_in==true}">
             <ul id="top_right_menu">
                 <%
-                    
+         
                     Database db = new Database();
                     Integer user_id = Integer.parseInt(session.getAttribute("user_id").toString());
                     Object args[] = {

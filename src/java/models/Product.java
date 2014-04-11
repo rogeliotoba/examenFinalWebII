@@ -18,6 +18,15 @@ public class Product {
     private int quantity;
     private boolean active;
     private String imageUrl;
+    private int cantidad;
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -29,6 +38,21 @@ public class Product {
 
     public Product(){};
 
+    public Product(int id, int departmentId, String departmentName, String name, String description, float price, int quantity, boolean active, String imageUrl, int cantidad) {
+        this.id = id;
+        this.departmentId = departmentId;
+        this.departmentName = departmentName;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.active = active;
+        this.imageUrl = imageUrl;
+        this.cantidad = cantidad;
+    }
+
+    
+    
     public Product(int id, int departmentId, String departmentName, String name, String description, float price, int quantity, boolean active, String imageUrl) {
         this.id = id;
         this.departmentId = departmentId;

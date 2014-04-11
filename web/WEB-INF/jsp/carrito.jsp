@@ -33,17 +33,20 @@
                     </thead>
                     
                     <tbody>
-                        <tr>
-                            <td><img src="img/gopro3.jpg" alt="go pro here 3" /></td>
-                            <td>Go pro 3</td>
-                            <td>Es uan camara para deportes, aguanta todo</td>
+                        <c:forEach var="product" items="${products}">
+                            <tr>
+                            <td><img src="img/products/${product.imageUrl}" alt="<c:out value="${product.name}" />" /></td>
+                            <td><c:out value="${product.name}" /></td>
+                            <td><c:out value="${product.description}" /></td>
                             <td>$2,500.00</td>
                             <td>1</td>
-                            <td>$2,500.00</td>
+                            <td>$<c:out value="${product.price}" /></td>
                             <td><a href="eliminarCarrito?id=2">Eliminar</a></td>
-                        </tr>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
+                <button>Realizar compra</button>
             </div>
         </div>
     </body>

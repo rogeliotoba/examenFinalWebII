@@ -19,13 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Department;
+import models.Product;
 
 /**
  *
  * @author rogeliotorres
  */
 public class main extends HttpServlet {
-    Database db = new Database();
     
     /**
      * Processes requests for both HTTP
@@ -40,7 +40,10 @@ public class main extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        ResultSet rs = db.ExecQuery("Select * from departments", null);
+        Database db = new Database();
+        
+        //Get the active deparments
+        ResultSet rs = db.ExecQuery("Select * from departments where active=1", null);
             
         List<Department> departmentList = new ArrayList();
             
@@ -58,8 +61,38 @@ public class main extends HttpServlet {
         {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         request.setAttribute("departments", departmentList);
+        
+        //get the products form the department
+        Integer department = 1;
+        if(request.getParameter("department")!=null) department = Integer.parseInt(request.getParameter("department"));
+        ResultSet rsProducts = db.ExecQuery("Select * from Products where DepartmentId=?", new Object[]{department});
+        
+        List<Product> products = new ArrayList();
+        if(rsProducts!=null)
+        {
+            try {
+                while(rsProducts.next())
+                {
+                    
+                    products.add(new Product(rsProducts.getInt("Id"),
+                                                          rsProducts.getInt("DepartmentId"),
+                                                          "",
+                                                          rsProducts.getString("Name"),
+                                                          rsProducts.getString("Description"),
+                                                          rsProducts.getFloat("Price"),
+                                                          rsProducts.getInt("Quantity"),
+                                                          rsProducts.getBoolean("Active")));
+                    
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        request.setAttribute("products", products);
+        
+        db.CloseConnection();
         
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/main_view.jsp");
         rd.forward(request, response);

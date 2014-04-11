@@ -28,41 +28,16 @@
                 </div>
 
                 <div id="comercial_content">
-                    <div class="product">
-                        <div class="product_image_container">
-                            <img src="img/gopro3.jpg" alt="product" />
+                    <c:forEach var="product" items="${products}">
+                        <div class="product">
+                            <div class="product_image_container">
+                                <img src="img/products/no-image.png" alt="product" />
+                            </div>
+                            <h3 class="product_name"><c:out value="${product.name}" /></h3>
+                            <p class="product_description"><c:out value="${product.description}" /></p>
+                            <p class="price">$<c:out value="${product.price}" /></p><button class="addCar">Agregar al carrito</button>
                         </div>
-                        <h3 class="product_name">Go pro hero 3</h3>
-                        <p class="product_description">Camara para deportes go pro 3 hero, soporta condiciones extremas. grabación de video en 1080P</p>
-                        <p class="price">$2,500.00</p><button class="addCar">Agregar al carrito</button>
-                    </div>
-
-                    <div class="product">
-                        <div class="product_image_container">
-                            <img src="img/bicicleta-bmw.jpg" alt="product" />
-                        </div>
-                        <h3 class="product_name">Bicileta bmw</h3>
-                        <p class="product_description">Bicicleta super pro BMW idela para impresionar chicas</p>
-                        <p class="price">$7,500.00</p><button class="addCar">Agregar al carrito</button>
-                    </div>
-
-                    <div class="product">
-                        <div class="product_image_container">
-                            <img src="img/gopro3.jpg" alt="product" />
-                        </div>
-                        <h3 class="product_name">Go pro hero 3</h3>
-                        <p class="product_description">Camara para deportes go pro 3 hero, soporta condiciones extremas. grabación de video en 1080P</p>
-                        <p class="price">$2,500.00</p><button class="addCar">Agregar al carrito</button>
-                    </div>
-                   
-                    <div class="product">
-                        <div class="product_image_container">
-                            <img src="img/gopro3.jpg" alt="product" />
-                        </div>
-                        <h3 class="product_name">Go pro hero 3</h3>
-                        <p class="product_description">Camara para deportes go pro 3 hero, soporta condiciones extremas. grabación de video en 1080P</p>
-                        <p class="price">$2,500.00</p><button class="addCar">Agregar al carrito</button>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>

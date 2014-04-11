@@ -47,7 +47,13 @@
                     </tbody>
                 </table>
                 
+                <c:if test="${not empty products}">
                 <button onClick="window.location.href = '/examenFinalWebII/realizarCompra?userId=${sessionScope.user_id}' ">Realizar compra</button>
+                </c:if>
+                
+                <c:if test="${empty products}">
+                    <p>Ningún producto en el carrito</p>
+                </c:if>
             </div>
         </div>
     </body>

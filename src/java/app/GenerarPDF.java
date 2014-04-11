@@ -8,6 +8,7 @@ package app;
 import com.itextpdf.awt.*;
 import com.itextpdf.testutils.*;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.xmp.*;
 import java.io.File;
@@ -64,7 +65,7 @@ public class GenerarPDF extends HttpServlet
                 + " WHERE S.Id = ?";
 
         querySaleInfo = "SELECT * FROM Sales S\n"
-                + "INNER JOIN Users U ON S.Id = U.Id\n"
+                + "INNER JOIN Users U ON S.UserId = U.Id\n"
                 + "WHERE S.Id = ?";
 
         rsPurchasedProducts = db.ExecQuery ( queryPurchasedProducts, args );
@@ -110,6 +111,31 @@ public class GenerarPDF extends HttpServlet
 
             document.add ( new Paragraph ( "COMPRA: " + saleInfo[0] ) );
             document.add ( new Paragraph ( "CLIENTE: " + saleInfo[4] + " " + saleInfo[5] ) );
+            document.add ( new Paragraph ( "DOMICILIO: " + saleInfo[6] + " CP " + saleInfo[7] ) );
+            document.add ( new Paragraph ( "TELEFONO: " + saleInfo[8] ) );
+            document.add ( new Paragraph ( "E-MAIL: " + saleInfo[9] ) );
+            document.add ( new Paragraph ( " " ) );
+
+            PdfPTable table = new PdfPTable ( 4 );
+            table.addCell ( "Codigo de Producto" );
+            table.addCell ( "Producto" );
+            table.addCell ( "Cantidad" );
+            table.addCell ( "Precio Unitario" );
+            for ( String[] product : purchasedProduct )
+            {
+                for ( int i = 0; i < 4; i++ )
+                {
+                    if ( i == 3 )
+                    {
+                        table.addCell ( "$ " + product[i] );
+                    }
+                    else
+                    {
+                        table.addCell ( product[i] );
+                    }
+                }
+            }
+            document.add ( table );
 
             document.close ();
             file.close ();

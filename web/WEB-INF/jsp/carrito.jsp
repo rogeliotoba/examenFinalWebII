@@ -39,9 +39,9 @@
                             <td><c:out value="${product.name}" /></td>
                             <td><c:out value="${product.description}" /></td>
                             <td>$2,500.00</td>
-                            <td>1</td>
+                            <td><c:out value="${product.cantidad}" /></td>
                             <td>$<c:out value="${product.price}" /></td>
-                            <td><a href="eliminarCarrito?id=2">Eliminar</a></td>
+                            <td><a href="eliminarCarrito?userId=${sessionScope.user_id}&productId=${product.id}">Eliminar</a></td>
                             </tr>
                         </c:forEach>
                     </tbody>

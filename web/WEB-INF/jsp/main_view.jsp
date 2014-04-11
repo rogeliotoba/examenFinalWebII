@@ -14,6 +14,16 @@
         <title>JSP Page</title>
         <link rel="stylesheet" type="text/css" href="css/theme.css">
         <link rel="stylesheet" type="text/css" href="css/main_view.css">
+        <script>
+            function addToCart(productId,userId,department)
+            {
+                if(department)
+                window.location.href = "/examenFinalWebII/addToCart?userId="+userId+"&productId="+productId+"&department="+department;
+                else
+                window.location.href = "/examenFinalWebII/addToCart?userId="+userId+"&productId="+productId+"&department=";
+                
+            }
+        </script>
     </head>
     <body>
         <div id="main_container">
@@ -36,7 +46,7 @@
                             </div>
                             <h3 class="product_name"><c:out value="${product.name}" /></h3>
                             <p class="product_description"><c:out value="${product.description}" /></p>
-                            <p class="price">$<c:out value="${product.price}" /></p><button class="addCar">Agregar al carrito</button>
+                            <p class="price">$<c:out value="${product.price}" /></p><button class="addCar" onClick="addToCart(${product.id},${sessionScope.user_id})">Agregar al carrito</button>
                         </div>
                     </c:forEach>
                 </div>

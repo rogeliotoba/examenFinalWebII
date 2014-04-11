@@ -93,7 +93,7 @@ public class realizarCompra extends HttpServlet {
                             db.ExecUpdate("Delete from ShoppingCart where UserId = ?", new Object[]{request.getParameter("userId")});
                         }
                         
-                        response.sendRedirect("mostrarCompra?id="+String.valueOf(maxId));
+                        response.sendRedirect("mostrarCompra?Sale="+String.valueOf(maxId));
                     }
                     
                 } catch (SQLException ex) {

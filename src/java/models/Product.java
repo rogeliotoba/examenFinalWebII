@@ -17,8 +17,29 @@ public class Product {
     private float price;
     private int quantity;
     private boolean active;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public Product(){};
+
+    public Product(int id, int departmentId, String departmentName, String name, String description, float price, int quantity, boolean active, String imageUrl) {
+        this.id = id;
+        this.departmentId = departmentId;
+        this.departmentName = departmentName;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.active = active;
+        this.imageUrl = imageUrl;
+    }
     
     public Product(int id, int departmentId, String departmentName, String name, String description, float price, int quantity, boolean active) {
         this.id = id;

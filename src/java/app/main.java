@@ -4,6 +4,7 @@
  */
 package app;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,7 @@ public class main extends HttpServlet {
             throws ServletException, IOException {
         
         Database db = new Database();
+        HttpSession session = request.getSession();
         
         //Get the active deparments
         ResultSet rs = db.ExecQuery("Select * from departments where active=1", null);
@@ -75,7 +78,15 @@ public class main extends HttpServlet {
             try {
                 while(rsProducts.next())
                 {
-                    
+                    ServletContext context = session.getServletContext();
+                    String virtualPath = "img/products/"+String.valueOf(rsProducts.getInt("Id"))+".jpg";
+                    String realPath = context.getRealPath(virtualPath);
+                    File fichero = new File(realPath);
+            
+                    String imageUrl = " ";
+                    if(fichero.exists()) imageUrl = String.valueOf(rsProducts.getInt("Id"))+".jpg";
+                    else imageUrl = "no-image.png";
+                
                     products.add(new Product(rsProducts.getInt("Id"),
                                                           rsProducts.getInt("DepartmentId"),
                                                           "",
@@ -83,7 +94,9 @@ public class main extends HttpServlet {
                                                           rsProducts.getString("Description"),
                                                           rsProducts.getFloat("Price"),
                                                           rsProducts.getInt("Quantity"),
-                                                          rsProducts.getBoolean("Active")));
+                                                          rsProducts.getBoolean("Active"),
+                                                          imageUrl));
+                    
                     
                 }
             } catch (SQLException ex) {

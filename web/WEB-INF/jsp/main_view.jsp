@@ -4,6 +4,7 @@
     Author     : rogeliotorres
 --%>
 
+<%@page import="java.io.File"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html>
@@ -31,7 +32,7 @@
                     <c:forEach var="product" items="${products}">
                         <div class="product">
                             <div class="product_image_container">
-                                <img src="img/products/no-image.png" alt="product" />
+                                <img src="img/products/${product.imageUrl}" alt="product" />
                             </div>
                             <h3 class="product_name"><c:out value="${product.name}" /></h3>
                             <p class="product_description"><c:out value="${product.description}" /></p>

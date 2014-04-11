@@ -37,19 +37,20 @@ public class realizarCompra extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         
         if(session!=null&&session.getAttribute("logged_in")!=null)
         {
             if(request.getParameter("userId")!=null)
             {
                 Database db = new Database();
+                Float totalAmount = 0.0F;
                 
                 //obtenemos el carrito
                 ResultSet rsCarrito = db.ExecQuery("select * from ShoppingCart S join products P on S.ProductId=P.Id where UserId = ?", new Object[]{request.getParameter("userId")});
                 
                 List<Product> products = new ArrayList();
-                
+                                
                 try {   
                     
                     while(rsCarrito.next())
@@ -64,9 +65,36 @@ public class realizarCompra extends HttpServlet {
                                       rsCarrito.getBoolean("Active"),
                                       "",
                                       rsCarrito.getInt("AmountProduct")));
+                        
+                        totalAmount += rsCarrito.getInt("AmountProduct")*rsCarrito.getFloat("Price");
                     }
                     
-                    System.out.println("tengo estos productos: "+products.size());
+                    if(totalAmount>0)
+                    {
+                        db.ExecUpdate("insert into sales values(?,?)", new Object[]{session.getAttribute("user_id"),totalAmount});//id, UserId, TotalAmount
+                        //Get the last sale
+                        ResultSet rsLastSale = db.ExecQuery("Select max(Id) as maximo from sales", null);
+                        
+                        Integer maxId = 0;
+                        if(rsLastSale.next())
+                        {
+                            maxId = rsLastSale.getInt("maximo");
+                            
+                            //Insertamos los productos de la compra en el detalle
+                            for(Product product:products)
+                            {
+                                db.ExecUpdate("insert into detailSales values(?,?,?,?)", new Object[]{maxId,product.getId(),product.getCantidad(),product.getPrice()}); //SaleId, ProductId, AmountProduct,PurchasePrice
+                            }
+                        }
+                        
+                        //borramos el carrito
+                        for(Product product:products)
+                        {
+                            db.ExecUpdate("Delete from ShoppingCart where UserId = ?", new Object[]{request.getParameter("userId")});
+                        }
+                        
+                        response.sendRedirect("mostrarCompra?id="+String.valueOf(maxId));
+                    }
                     
                 } catch (SQLException ex) {
                     Logger.getLogger(realizarCompra.class.getName()).log(Level.SEVERE, null, ex);

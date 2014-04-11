@@ -34,7 +34,7 @@ public class addToCart extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         
         if(session!=null && session.getAttribute("logged_in")!=null)
         {

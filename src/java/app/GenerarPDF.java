@@ -15,8 +15,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,14 +47,57 @@ public class GenerarPDF extends HttpServlet
     {
         Database db = new Database ();
         String idSale = request.getParameter ( "Sale" );
-        String query;
+        String queryPurchasedProducts;
+        String querySaleInfo;
         ResultSet rsPurchasedProducts;
-        java.util.List<String[]> departments = new ArrayList<String[]> ();
+        ResultSet rsSaleInfo;
+        Object[] args = new Object[]
+        {
+            Integer.parseInt ( idSale )
+        };
+        java.util.List<String[]> purchasedProduct = new ArrayList<String[]> ();
+        String[] saleInfo = new String[ 14 ];
 
-        query = " SELECT P.Name, D.AmountProduct, D.PurchasePrice FROM Sales S\n"
+        queryPurchasedProducts = " SELECT P.Id, P.Name, D.AmountProduct, D.PurchasePrice FROM Sales S\n"
                 + " INNER JOIN DetailSales D ON D.SaleId = S.Id\n"
                 + " INNER JOIN Products P ON P.Id = D.ProductId\n"
                 + " WHERE S.Id = ?";
+
+        querySaleInfo = "SELECT * FROM Sales S\n"
+                + "INNER JOIN Users U ON S.Id = U.Id\n"
+                + "WHERE S.Id = ?";
+
+        rsPurchasedProducts = db.ExecQuery ( queryPurchasedProducts, args );
+        rsSaleInfo = db.ExecQuery ( querySaleInfo, args );
+
+        try
+        {
+            while ( rsPurchasedProducts.next () )
+            {
+                String[] products = new String[]
+                {
+                    rsPurchasedProducts.getString ( "Id" ),
+                    rsPurchasedProducts.getString ( "Name" ),
+                    rsPurchasedProducts.getString ( "AmountProduct" ),
+                    rsPurchasedProducts.getString ( "PurchasePrice" )
+                };
+                purchasedProduct.add ( products );
+            }
+
+            while ( rsSaleInfo.next () )
+            {
+                for ( int i = 0; i < 14; i++ )
+                {
+                    saleInfo[i] = rsSaleInfo.getObject ( i + 1 ).toString ();
+                }
+            }
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( GenerarPDF.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
+        }
+        db.CloseConnection ();
 
         HttpSession session = request.getSession ();
         try
@@ -61,6 +107,10 @@ public class GenerarPDF extends HttpServlet
             Document document = new Document ();
             PdfWriter.getInstance ( document, file );
             document.open ();
+
+            document.add ( new Paragraph ( "COMPRA: " + saleInfo[0] ) );
+            document.add ( new Paragraph ( "CLIENTE: " + saleInfo[4] + " " + saleInfo[5] ) );
+
             document.close ();
             file.close ();
         }

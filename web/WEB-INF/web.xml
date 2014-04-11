@@ -44,6 +44,10 @@
         <servlet-name>GenerarPDF</servlet-name>
         <servlet-class>app.GenerarPDF</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>realizarCompra</servlet-name>
+        <servlet-class>app.realizarCompra</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>GenerarPDF</servlet-name>
         <url-pattern>/GenerarPDF</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>realizarCompra</servlet-name>
+        <url-pattern>/realizarCompra</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

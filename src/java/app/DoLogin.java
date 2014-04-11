@@ -48,7 +48,7 @@ public class DoLogin extends HttpServlet
             request.getParameter ( "password" )
         };
 
-        ResultSet rs = db.ExecQuery ( "Select * from users where username = ? and password = ? and active=1", argumentos );
+        ResultSet rs = db.ExecQuery( "Select * from users where username = ? and password = ? and active=1", argumentos );
 
         if ( rs != null )
         {
@@ -56,6 +56,7 @@ public class DoLogin extends HttpServlet
             {
                 if ( rs.next () )
                 {
+                    System.out.println("El valor de name es = "+rs.getString("name"));
                     session.setAttribute ( "logged_in", true );
                     session.setAttribute ( "user_id", rs.getInt ( "id" ) );
                     session.setAttribute ( "name", rs.getString ( "name" ) + " " + rs.getString ( "lastname") );

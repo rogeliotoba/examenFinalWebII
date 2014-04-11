@@ -32,14 +32,9 @@ public class Access extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession(false);
-        
-        if(session==null||session.getAttribute("logged_in")==null)
-        {
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/access.jsp");
             rd.forward(request, response);
-        }
-        else response.sendRedirect("");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

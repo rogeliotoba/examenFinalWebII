@@ -32,9 +32,15 @@
 
                     </c:if>
                     <div id="photoPanel">
-                        <img alt="profile.jpg" src="aaaa.jpg" width="200" height="200"/>
+                        <img alt="no-profile.jpg" src="../img/users/${Photo}" width="200" height="200"/>
                         <br>
-                        <a href="#">Actulizar Foto</a>
+                        <form method="POST" action="main?section=ChangeUserPhoto&id=${user_profile.id}" enctype="multipart/form-data">
+                            Cambiar Imagen
+                            <br>
+                            <input type="file" name="newPhoto" />
+                            <br>
+                            <input type="submit" value="Cambiar Foto" />
+                        </form>
                     </div>
                     <div id="dataPanel">
                         <form name="frmProfile" method="post" action="main?section=Profile">

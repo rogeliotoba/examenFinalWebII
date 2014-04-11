@@ -6,6 +6,7 @@
 package administration;
 
 import app.Database;
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,10 @@ import javax.servlet.http.HttpSession;
 import models.Department;
 import models.Product;
 import models.User;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletRequestContext;
 
 /**
  *
@@ -29,7 +35,7 @@ import models.User;
  */
 public class Main extends HttpServlet
 {
-
+    
     private boolean foward = true;
 
     /**
@@ -45,7 +51,7 @@ public class Main extends HttpServlet
             throws ServletException, IOException
     {
         HttpSession session = request.getSession ();
-
+        
         if ( session.getAttribute ( "user_id" ) != null || session.getAttribute ( "logged_in" ) != null || session.getAttribute ( "name" ) != null || session.getAttribute ( "rol" ) != null )
         {
             if ( session.getAttribute ( "rol" ).equals ( 1 ) )
@@ -60,13 +66,13 @@ public class Main extends HttpServlet
                             foward = true;
                             rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/profile.jsp" );
                             break;
-
+                        
                         case "Departments":
                             Departments ( request );
                             foward = true;
                             rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/departments.jsp" );
                             break;
-
+                        
                         case "AddDepartment":
                             if ( request.getParameter ( "departmentName" ) != null )
                             {
@@ -74,17 +80,17 @@ public class Main extends HttpServlet
                             }
                             foward = false;
                             break;
-
+                        
                         case "activeDepartment":
                         case "deleteDepartment":
                             if ( request.getParameter ( "derpartmentId" ) != null )
                             {
                                 StatusDepartment ( request, response );
-
+                                
                             }
                             foward = false;
                             break;
-
+                        
                         case "Products":
                             if ( request.getParameter ( "add" ) != null && request.getParameter ( "add" ).equals ( "true" ) )
                             {
@@ -107,13 +113,13 @@ public class Main extends HttpServlet
                                 rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/products.jsp" );
                             }
                             break;
-
+                        
                         case "AddProduct":
                         case "EditProduct":
                             AddUpdateProduct ( request, response );
                             foward = false;
                             break;
-
+                        
                         case "Clients":
                             if ( request.getParameter ( "Active" ) != null || request.getParameter ( "Inactive" ) != null )
                             {
@@ -128,7 +134,7 @@ public class Main extends HttpServlet
                                 rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/clients.jsp" );
                             }
                             break;
-
+                        
                         case "AdminUsers":
                             if ( request.getParameter ( "add" ) != null && request.getParameter ( "add" ).equals ( "true" ) )
                             {
@@ -148,13 +154,19 @@ public class Main extends HttpServlet
                                 rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_users.jsp" );
                             }
                             break;
-
+                        
                         case "AddAdminUser":
                         case "EditAdminUser":
                             AddUpdateAdminUser ( request, response );
                             foward = false;
                             break;
-
+                        
+                        case "ChangeUserPhoto":
+                            System.out.println ( "Hola" );
+                            ChangeUserPhoto ( request, response );
+                            foward = false;
+                            break;
+                        
                     }
                 }
                 else
@@ -163,7 +175,7 @@ public class Main extends HttpServlet
                     foward = true;
                     rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/profile.jsp" );
                 }
-
+                
                 if ( foward )
                 {
                     rd.forward ( request, response );
@@ -232,7 +244,7 @@ public class Main extends HttpServlet
         {
             session.getAttribute ( "user_id" )
         };
-
+        
         if ( request.getParameter ( "user_email" ) != null )
         {
             if ( request.getParameter ( "new_password" ).equals ( request.getParameter ( "new_password2" ) ) )
@@ -245,7 +257,7 @@ public class Main extends HttpServlet
                     update = "UPDATE Users "
                             + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ?, Password = ? "
                             + "WHERE Id = ?";
-
+                    
                     update_args = new Object[]
                     {
                         request.getParameter ( "user_name" ),
@@ -263,7 +275,7 @@ public class Main extends HttpServlet
                     update = "UPDATE Users "
                             + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ? "
                             + "WHERE Id = ?";
-
+                    
                     update_args = new Object[]
                     {
                         request.getParameter ( "user_name" ),
@@ -283,7 +295,7 @@ public class Main extends HttpServlet
                 request.setAttribute ( "invalid_new_password", true );
             }
         }
-
+        
         rs = db.ExecQuery ( query, args );
         try
         {
@@ -297,20 +309,34 @@ public class Main extends HttpServlet
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
             db.CloseConnection ();
         }
+        
+        ServletContext context = session.getServletContext ();
+        String virtualPath = "img/users/" + String.valueOf ( session.getAttribute ( "user_id" ) ) + ".jpg";
+        String realPath = context.getRealPath ( virtualPath );
+        File fichero = new File ( realPath );
+        
+        if ( fichero.exists () )
+        {
+            request.setAttribute ( "Photo", String.valueOf ( session.getAttribute ( "user_id" ) ) + ".jpg" );
+        }
+        else
+        {
+            request.setAttribute ( "Photo", "no-profile.jpg" );
+        }
         db.CloseConnection ();
         request.setAttribute ( "user_profile", user );
     }
-
+    
     private void Departments ( HttpServletRequest request )
     {
         List<String[]> departments = new ArrayList<String[]> ();
         Database db = new Database ();
         ResultSet rs;
         String query;
-
+        
         query = "SELECT * FROM vw_departments\n"
                 + "WHERE Status = ?;";
-
+        
         int status;
         if ( request.getParameter ( "departmentStatus" ) == null )
         {
@@ -320,7 +346,7 @@ public class Main extends HttpServlet
         {
             status = Integer.parseInt ( request.getParameter ( "departmentStatus" ) );
         }
-
+        
         try
         {
             rs = db.ExecQuery ( query, new Object[]
@@ -344,7 +370,7 @@ public class Main extends HttpServlet
         request.setAttribute ( "departments", departments );
         request.setAttribute ( "departmentStatus", status );
     }
-
+    
     private void AddDepartment ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
@@ -353,7 +379,7 @@ public class Main extends HttpServlet
         {
             request.getParameter ( "departmentName" )
         };
-
+        
         try
         {
             db.ExecUpdate ( query, args );
@@ -364,10 +390,10 @@ public class Main extends HttpServlet
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
             db.CloseConnection ();
         }
-
+        
         db.CloseConnection ();
     }
-
+    
     private void StatusDepartment ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
@@ -375,7 +401,7 @@ public class Main extends HttpServlet
         int products = 1;
         String query;
         ResultSet rs;
-
+        
         try
         {
             if ( request.getParameter ( "section" ).equals ( "deleteDepartment" ) )
@@ -409,7 +435,7 @@ public class Main extends HttpServlet
                 } );
                 response.sendRedirect ( "main?section=Departments&departmentStatus=0" );
             }
-
+            
         }
         catch ( SQLException ex )
         {
@@ -423,7 +449,7 @@ public class Main extends HttpServlet
         }
         db.CloseConnection ();
     }
-
+    
     private void Products ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
@@ -431,13 +457,13 @@ public class Main extends HttpServlet
         String department;
         ResultSet rs;
         List<Product> products = new ArrayList<> ();
-
+        
         if ( request.getParameter ( "department" ) != null )
         {
             department = request.getParameter ( "department" );
             query = "SELECT * FROM Products"
                     + " Where DepartmentId = ?";
-
+            
             rs = db.ExecQuery ( query, new Object[]
             {
                 Integer.parseInt ( department )
@@ -466,14 +492,14 @@ public class Main extends HttpServlet
         db.CloseConnection ();
         request.setAttribute ( "products", products );
     }
-
+    
     private void ListDepartments ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
         String query;
         ResultSet rs;
         List<Department> departments = new ArrayList<> ();
-
+        
         query = "SELECT * FROM Departments Where Active = 1";
         rs = db.ExecQuery ( query, null );
         try
@@ -495,7 +521,7 @@ public class Main extends HttpServlet
         db.CloseConnection ();
         request.setAttribute ( "departments", departments );
     }
-
+    
     private void ProductoInfo ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
@@ -503,7 +529,7 @@ public class Main extends HttpServlet
         String id;
         ResultSet rs;
         Product tmp = new Product ();
-
+        
         id = request.getParameter ( "edit" );
         query = "SELECT * FROM Products WHERE Id = ?";
         rs = db.ExecQuery ( query, new Object[]
@@ -530,13 +556,13 @@ public class Main extends HttpServlet
         db.CloseConnection ();
         request.setAttribute ( "product", tmp );
     }
-
+    
     private void AddUpdateProduct ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
         String query;
         Object[] args;
-
+        
         if ( request.getParameter ( "productId" ) == null )
         {
             query = "INSERT INTO Products VALUES (?,?,?,?,?,?)";
@@ -549,7 +575,7 @@ public class Main extends HttpServlet
                 Integer.parseInt ( request.getParameter ( "productQuantity" ) ),
                 Integer.parseInt ( request.getParameter ( "productStatus" ) )
             };
-
+            
             db.ExecUpdate ( query, args );
         }
         else
@@ -567,10 +593,10 @@ public class Main extends HttpServlet
                 Integer.parseInt ( request.getParameter ( "productStatus" ) ),
                 Integer.parseInt ( request.getParameter ( "productId" ) )
             };
-
+            
             db.ExecUpdate ( query, args );
         }
-
+        
         try
         {
             response.sendRedirect ( "main?section=Products&department=" + request.getParameter ( "productLastDepartment" ) );
@@ -580,17 +606,17 @@ public class Main extends HttpServlet
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
         }
     }
-
+    
     private void AdminUsers ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
         String query;
         ResultSet rs;
         List<User> users = new ArrayList<> ();
-
+        
         query = "SELECT * FROM Users WHERE Rol = 1";
         rs = db.ExecQuery ( query, null );
-
+        
         try
         {
             while ( rs.next () )
@@ -614,20 +640,21 @@ public class Main extends HttpServlet
         db.CloseConnection ();
         request.setAttribute ( "users", users );
     }
-
+    
     private void AdminUserInfo ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
         String query;
         ResultSet rs;
         User user = new User ();
-
+        HttpSession session = request.getSession ();
+        
         query = "SELECT * FROM Users Where Id = ? AND Active = 1";
         rs = db.ExecQuery ( query, new Object[]
         {
             Integer.parseInt ( request.getParameter ( "edit" ) )
         } );
-
+        
         try
         {
             while ( rs.next () )
@@ -642,16 +669,31 @@ public class Main extends HttpServlet
             db.CloseConnection ();
         }
         db.CloseConnection ();
+        
+        ServletContext context = session.getServletContext ();
+        String virtualPath = "img/users/" + String.valueOf ( user.getId () ) + ".jpg";
+        String realPath = context.getRealPath ( virtualPath );
+        File fichero = new File ( realPath );
+        
+        if ( fichero.exists () )
+        {
+            request.setAttribute ( "Photo", String.valueOf ( user.getId () ) + ".jpg" );
+        }
+        else
+        {
+            request.setAttribute ( "Photo", "no-profile.jpg" );
+        }
+        
         request.setAttribute ( "user", user );
     }
-
+    
     private void AddUpdateAdminUser ( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
         Database db = new Database ();
         String query;
         Object[] args;
         boolean passwordMatch = true;
-
+        
         if ( request.getParameter ( "new_password" ).equals ( request.getParameter ( "new_password2" ) ) )
         {
             if ( request.getParameter ( "user_id" ) == null )
@@ -669,7 +711,7 @@ public class Main extends HttpServlet
                     request.getParameter ( "new_password" ),
                     request.getParameter ( "user_status" )
                 };
-
+                
                 db.ExecUpdate ( query, args );
             }
             else
@@ -682,7 +724,7 @@ public class Main extends HttpServlet
                     update = "UPDATE Users "
                             + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ?, Password = ?, Active = ? "
                             + "WHERE Id = ?";
-
+                    
                     update_args = new Object[]
                     {
                         request.getParameter ( "user_name" ),
@@ -701,7 +743,7 @@ public class Main extends HttpServlet
                     update = "UPDATE Users "
                             + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ?, Active = ? "
                             + "WHERE Id = ?";
-
+                    
                     update_args = new Object[]
                     {
                         request.getParameter ( "user_name" ),
@@ -721,9 +763,9 @@ public class Main extends HttpServlet
         {
             passwordMatch = false;
         }
-
+        
         db.CloseConnection ();
-
+        
         if ( passwordMatch )
         {
             try
@@ -743,13 +785,13 @@ public class Main extends HttpServlet
             rd.forward ( request, response );
         }
     }
-
+    
     private void ClientStatus ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
         String id;
         String query;
-
+        
         if ( request.getParameter ( "Active" ) != null )
         {
             id = request.getParameter ( "Active" );
@@ -768,9 +810,9 @@ public class Main extends HttpServlet
         {
             Integer.parseInt ( id )
         } );
-
+        
         db.CloseConnection ();
-
+        
         try
         {
             response.sendRedirect ( "main?section=Clients" );
@@ -780,17 +822,17 @@ public class Main extends HttpServlet
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
         }
     }
-
+    
     private void Clients ( HttpServletRequest request, HttpServletResponse response )
     {
         Database db = new Database ();
         String query;
         ResultSet rs = null;
         List<User> clients = new ArrayList<> ();
-
+        
         query = "SELECT * FROM Users WHERE Rol = 2";
         rs = db.ExecQuery ( query, null );
-
+        
         try
         {
             while ( rs.next () )
@@ -806,5 +848,56 @@ public class Main extends HttpServlet
         }
         db.CloseConnection ();
         request.setAttribute ( "clients", clients );
+    }
+    
+    private void ChangeUserPhoto ( HttpServletRequest request, HttpServletResponse response )
+    {
+        File destino = new File ( "" + request.getSession ().getServletContext ().getRealPath ( "img/users" ) );
+        ServletRequestContext src = new ServletRequestContext ( request );
+        if ( ServletFileUpload.isMultipartContent ( src ) )
+        {
+            try
+            {
+                DiskFileItemFactory factory = new DiskFileItemFactory ( ( 1024 * 1024 ), destino );
+                ServletFileUpload upload = new ServletFileUpload ( factory );
+                java.util.List lista = upload.parseRequest ( src );
+                java.util.Iterator it = lista.iterator ();
+                
+                while ( it.hasNext () )
+                {
+                    FileItem item = ( FileItem ) it.next ();
+                    if ( item.isFormField () )
+                    {
+                        
+                    }
+                    else
+                    {
+                        
+                        item.write ( new File ( destino, request.getParameter ( "id" ).concat ( ".jpg" ) ) );
+                    }
+                }
+                
+            }
+            catch ( Exception ex )
+            {
+                Logger.getLogger ( "cambiarImagenPerfil" ).log ( Level.SEVERE, null, ex );
+            }
+            
+            try
+            {
+                if ( request.getParameter ( "section" ) != null )
+                {
+                    response.sendRedirect ( "main?section=AdminUsers&edit=" + request.getParameter ( "id" ) );
+                }
+                else
+                {
+                    response.sendRedirect ( "main?section=Profile" );
+                }
+            }
+            catch ( IOException ex )
+            {
+                Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            }
+        }
     }
 }

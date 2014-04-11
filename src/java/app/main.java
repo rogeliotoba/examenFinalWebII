@@ -69,7 +69,7 @@ public class main extends HttpServlet {
         
         //get the products form the department
         Integer department = 1;
-        if(request.getParameter("department")!=null) department = Integer.parseInt(request.getParameter("department"));
+        if(request.getParameter("department")!=null && !request.getParameter("department").equals("")) department = Integer.parseInt(request.getParameter("department"));
         ResultSet rsProducts = db.ExecQuery("Select * from Products where DepartmentId=?", new Object[]{department});
         
         List<Product> products = new ArrayList();

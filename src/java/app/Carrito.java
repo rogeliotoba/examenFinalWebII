@@ -75,7 +75,8 @@ public class Carrito extends HttpServlet {
                                                           rsProducts.getFloat("Price"),
                                                           rsProducts.getInt("Quantity"),
                                                           rsProducts.getBoolean("Active"),
-                                                          imageUrl));
+                                                          imageUrl,
+                                                          rsProducts.getInt("AmountProduct")));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);

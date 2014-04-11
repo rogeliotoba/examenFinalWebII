@@ -36,15 +36,17 @@
                     </c:choose>
                     <hr>
                     <div id="photoPanel">
-                        <img alt="no-profile.jpg" src="../img/products/${Photo}" width="200" height="200"/>
-                        <br>
-                        <form method="POST" action="main?section=ChangeProductPhoto&id=${product.id}&section=ProductInfo" enctype="multipart/form-data">
-                            Cambiar Imagen
+                        <c:if test="${not empty product.name}">
+                            <img alt="no-profile.jpg" src="../img/products/${Photo}" width="200" height="200"/>
                             <br>
-                            <input type="file" name="newPhoto" />
-                            <br>
-                            <input type="submit" value="Cambiar Foto" />
-                        </form>
+                            <form method="POST" action="main?section=ChangeProductPhoto&id=${product.id}&section=ProductInfo" enctype="multipart/form-data">
+                                Cambiar Imagen
+                                <br>
+                                <input type="file" name="newPhoto" />
+                                <br>
+                                <input type="submit" value="Cambiar Foto" />
+                            </form>
+                        </c:if>
                     </div>
                     <div id="dataPanel">
                         <c:choose>

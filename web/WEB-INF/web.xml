@@ -36,6 +36,10 @@
         <servlet-name>Carrito</servlet-name>
         <servlet-class>app.Carrito</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenerarPDF</servlet-name>
+        <servlet-class>app.GenerarPDF</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>Carrito</servlet-name>
         <url-pattern>/carrito</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerarPDF</servlet-name>
+        <url-pattern>/GenerarPDF</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

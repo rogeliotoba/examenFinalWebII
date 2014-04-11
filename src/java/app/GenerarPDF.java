@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -46,6 +47,7 @@ public class GenerarPDF extends HttpServlet
     protected void processRequest ( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException
     {
+        DecimalFormat df = new DecimalFormat ();
         Database db = new Database ();
         String idSale = request.getParameter ( "Sale" );
         String queryPurchasedProducts;
@@ -58,19 +60,21 @@ public class GenerarPDF extends HttpServlet
         };
         java.util.List<String[]> purchasedProduct = new ArrayList<String[]> ();
         String[] saleInfo = new String[ 14 ];
-
+        
+        df.setMaximumFractionDigits ( 2 );
+        
         queryPurchasedProducts = " SELECT P.Id, P.Name, D.AmountProduct, D.PurchasePrice FROM Sales S\n"
                 + " INNER JOIN DetailSales D ON D.SaleId = S.Id\n"
                 + " INNER JOIN Products P ON P.Id = D.ProductId\n"
                 + " WHERE S.Id = ?";
-
+        
         querySaleInfo = "SELECT * FROM Sales S\n"
                 + "INNER JOIN Users U ON S.UserId = U.Id\n"
                 + "WHERE S.Id = ?";
-
+        
         rsPurchasedProducts = db.ExecQuery ( queryPurchasedProducts, args );
         rsSaleInfo = db.ExecQuery ( querySaleInfo, args );
-
+        
         try
         {
             while ( rsPurchasedProducts.next () )
@@ -84,7 +88,7 @@ public class GenerarPDF extends HttpServlet
                 };
                 purchasedProduct.add ( products );
             }
-
+            
             while ( rsSaleInfo.next () )
             {
                 for ( int i = 0; i < 14; i++ )
@@ -99,23 +103,26 @@ public class GenerarPDF extends HttpServlet
             db.CloseConnection ();
         }
         db.CloseConnection ();
-
+        
         HttpSession session = request.getSession ();
         try
         {
-            OutputStream file = new FileOutputStream ( new File ( "" + session.getServletContext ().getRealPath ( "reporte/reporteCompra.pdf" ) ) );
-
+            OutputStream file = new FileOutputStream ( new File ( "" + session.getServletContext ().getRealPath ( "reporte/reporteCompra2.pdf" ) ) );
+            
             Document document = new Document ();
             PdfWriter.getInstance ( document, file );
             document.open ();
-
+            
             document.add ( new Paragraph ( "COMPRA: " + saleInfo[0] ) );
             document.add ( new Paragraph ( "CLIENTE: " + saleInfo[4] + " " + saleInfo[5] ) );
             document.add ( new Paragraph ( "DOMICILIO: " + saleInfo[6] + " CP " + saleInfo[7] ) );
             document.add ( new Paragraph ( "TELEFONO: " + saleInfo[8] ) );
             document.add ( new Paragraph ( "E-MAIL: " + saleInfo[9] ) );
             document.add ( new Paragraph ( " " ) );
-
+            document.add ( new Paragraph ( "TOTAL DE COMPRA: $ " + df.format ( Double.parseDouble ( saleInfo[2] ) ) ) );
+            document.add ( new Paragraph ( "DETALLE: " ) );
+            document.add ( new Paragraph ( " " ) );
+            
             PdfPTable table = new PdfPTable ( 4 );
             table.addCell ( "Codigo de Producto" );
             table.addCell ( "Producto" );
@@ -127,7 +134,7 @@ public class GenerarPDF extends HttpServlet
                 {
                     if ( i == 3 )
                     {
-                        table.addCell ( "$ " + product[i] );
+                        table.addCell ( "$ " + df.format ( Double.parseDouble ( product[i] ) ) );
                     }
                     else
                     {
@@ -136,9 +143,11 @@ public class GenerarPDF extends HttpServlet
                 }
             }
             document.add ( table );
-
+            
             document.close ();
             file.close ();
+            
+            response.sendRedirect ( "reporte/reporteCompra2.pdf" );
         }
         catch ( Exception e )
         {

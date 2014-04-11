@@ -48,7 +48,7 @@ public class DoLogin extends HttpServlet
             request.getParameter ( "password" )
         };
 
-        ResultSet rs = db.ExecQuery ( "Select * from users where username = ? and password = ?", argumentos );
+        ResultSet rs = db.ExecQuery ( "Select * from users where username = ? and password = ? and active=1", argumentos );
 
         if ( rs != null )
         {

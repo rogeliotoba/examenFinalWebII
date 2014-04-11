@@ -120,8 +120,23 @@ public class Main extends HttpServlet
                             break;
 
                         case "AdminUsers":
-                            foward = true;
-                            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_users.jsp" );
+                            if ( request.getParameter ( "add" ) != null && request.getParameter ( "add" ).equals ( "true" ) )
+                            {
+                                foward = true;
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_user_info.jsp" );
+                            }
+                            else if ( request.getParameter ( "edit" ) != null )
+                            {
+                                AdminUserInfo ( request, response );
+                                foward = true;
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_user_info.jsp" );
+                            }
+                            else
+                            {
+                                AdminUsers ( request, response );
+                                foward = true;
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_users.jsp" );
+                            }
                             break;
 
                     }
@@ -536,17 +551,81 @@ public class Main extends HttpServlet
                 Integer.parseInt ( request.getParameter ( "productStatus" ) ),
                 Integer.parseInt ( request.getParameter ( "productId" ) )
             };
-            
+
             db.ExecUpdate ( query, args );
         }
 
         try
         {
-            response.sendRedirect ( "main?section=Products&department=" + request.getParameter ( "productLastDepartment") );
+            response.sendRedirect ( "main?section=Products&department=" + request.getParameter ( "productLastDepartment" ) );
         }
         catch ( IOException ex )
         {
             Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
         }
+    }
+
+    private void AdminUsers ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query;
+        ResultSet rs;
+        List<User> users = new ArrayList<> ();
+
+        query = "SELECT * FROM Users WHERE Rol = 1";
+        rs = db.ExecQuery ( query, null );
+
+        try
+        {
+            while ( rs.next () )
+            {
+                User tmp = new User ();
+                tmp.setId ( rs.getInt ( "Id" ) );
+                tmp.setName ( rs.getString ( "Name" ) );
+                tmp.setLastName ( rs.getString ( "LastName" ) );
+                tmp.setEmail ( rs.getString ( "Email" ) );
+                tmp.setPhone ( rs.getString ( "Phone" ) );
+                tmp.setUsername ( rs.getString ( "Username" ) );
+                tmp.setActive ( rs.getBoolean ( "Active" ) );
+                users.add ( tmp );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
+        }
+        db.CloseConnection ();
+        request.setAttribute ( "users", users );
+    }
+
+    private void AdminUserInfo ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query;
+        ResultSet rs;
+        User user = new User ();
+
+        query = "SELECT * FROM Users Where Id = ? AND Active = 1";
+        rs = db.ExecQuery ( query, new Object[]
+        {
+            Integer.parseInt ( request.getParameter ( "edit" ) )
+        } );
+
+        try
+        {
+            while ( rs.next () )
+            {
+                user = new User ( rs.getInt ( "id" ), rs.getString ( "name" ), rs.getString ( "lastname" ), rs.getString ( "address" ), rs.getInt ( "postalcode" ), rs.getString ( "phone" ), rs.getString ( "email" ), rs.getString ( "username" ), rs.getString ( "password" ), rs.getInt ( "rol" ) );
+                user.setActive ( rs.getBoolean ( "Active" ) );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            db.CloseConnection ();
+        }
+        db.CloseConnection ();
+        request.setAttribute ( "user", user );
     }
 }

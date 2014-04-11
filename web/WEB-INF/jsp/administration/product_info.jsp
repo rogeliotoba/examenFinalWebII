@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Administracion - Mi Perfil</title>
+        <title>Administracion - Productos</title>
         <link rel="stylesheet" type="text/css" href="../css/theme.css">
         <link rel="stylesheet" type="text/css" href="../css/administration/departments.css">
         <style type="text/css">
@@ -95,16 +95,16 @@
                                     <td>Estatus:</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${true == product.active}">
+                                            <c:when test="${false == product.active}">
                                                 <select name="productStatus">
-                                                    <option value="1" selected>Activo</option>
-                                                    <option value="0">Inactivo</option>
+                                                    <option value="1">Activo</option>
+                                                    <option value="0" selected>Inactivo</option>
                                                 </select>
                                             </c:when>
                                             <c:otherwise>
                                                 <select name="productStatus">
-                                                    <option value="1">Activo</option>
-                                                    <option value="0" selected>Inactivo</option>
+                                                    <option value="1" selected>Activo</option>
+                                                    <option value="0">Inactivo</option>
                                                 </select>
                                             </c:otherwise>
                                         </c:choose>   

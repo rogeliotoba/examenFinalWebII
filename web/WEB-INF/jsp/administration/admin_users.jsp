@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Administracion - Mi Perfil</title>
+        <title>Administracion - Cuentas Administracion</title>
         <link rel="stylesheet" type="text/css" href="../css/theme.css">
         <link rel="stylesheet" type="text/css" href="../css/administration/departments.css">
     </head>
@@ -22,6 +22,29 @@
                 <div id="departmentContent">
                     <h2>Cuentas Administrador</h2>
                     <hr>
+                    <form style="padding-bottom: 8px;" method="post" action="main?section=AdminUsers&add=true">
+                        <input type="submit" value="Agregar Usuario"/>
+                    </form>
+                    <table border="1">
+                        <tr>
+                            <td><b>Id</b></td>
+                            <td><b>Nombre</b></td>
+                            <td><b>E-Mail</b></td>
+                            <td><b>Telefono</b></td>
+                            <td><b>Usuario</b></td>
+                            <td><b>Editar</b></td>
+                        </tr>
+                        <c:forEach var="object" items="${users}">
+                            <tr>
+                                <td><c:out value="${object.id}"/></td>
+                                <td><c:out value="${object.name} ${object.lastName}"/></td>
+                                <td><c:out value="${object.email}"/></td>
+                                <td><c:out value="${object.phone}"/></td>
+                                <td><c:out value="${object.username}"/></td>
+                                <td><a href="main?section=AdminUsers&edit=${object.id}">Editar</a></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
             </div>
         </div>

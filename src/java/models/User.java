@@ -21,6 +21,7 @@ public class User
     private String username;
     private String password;
     private int rol;
+    private boolean active;
 
     public User ()
     {
@@ -140,4 +141,15 @@ public class User
         this.rol = rol;
     }
 
+    public boolean isActive ()
+    {
+        return active;
+    }
+
+    public void setActive ( boolean active )
+    {
+        this.active = active;
+    }
+
+    
 }

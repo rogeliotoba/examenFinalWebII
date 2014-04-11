@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Administracion - Mi Perfil</title>
+        <title>Administracion - Productos</title>
         <link rel="stylesheet" type="text/css" href="../css/theme.css">
         <link rel="stylesheet" type="text/css" href="../css/administration/departments.css">
     </head>

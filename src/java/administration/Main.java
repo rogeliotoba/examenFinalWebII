@@ -139,6 +139,12 @@ public class Main extends HttpServlet
                             }
                             break;
 
+                        case "AddAdminUser":
+                        case "EditAdminUser":
+                            AddUpdateAdminUser ( request, response );
+                            foward = false;
+                            break;
+
                     }
                 }
                 else
@@ -627,5 +633,104 @@ public class Main extends HttpServlet
         }
         db.CloseConnection ();
         request.setAttribute ( "user", user );
+    }
+
+    private void AddUpdateAdminUser ( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+    {
+        Database db = new Database ();
+        String query;
+        Object[] args;
+        boolean passwordMatch = true;
+
+        if ( request.getParameter ( "new_password" ).equals ( request.getParameter ( "new_password2" ) ) )
+        {
+            if ( request.getParameter ( "user_id" ) == null )
+            {
+                query = "INSERT INTO Users VALUES(?,?,?,?,?,?,?,?,1,?)";
+                args = new Object[]
+                {
+                    request.getParameter ( "user_name" ),
+                    request.getParameter ( "user_lastname" ),
+                    request.getParameter ( "user_address" ),
+                    request.getParameter ( "user_postalCode" ),
+                    request.getParameter ( "user_phone" ),
+                    request.getParameter ( "user_email" ),
+                    request.getParameter ( "user_username" ),
+                    request.getParameter ( "new_password" ),
+                    request.getParameter ( "user_status" )
+                };
+
+                db.ExecUpdate ( query, args );
+            }
+            else
+            {
+                int postalcode = Integer.parseInt ( request.getParameter ( "user_postalCode" ) );
+                String update;
+                Object[] update_args;
+                if ( !request.getParameter ( "new_password" ).isEmpty () )
+                {
+                    update = "UPDATE Users "
+                            + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ?, Password = ?, Active = ? "
+                            + "WHERE Id = ?";
+
+                    update_args = new Object[]
+                    {
+                        request.getParameter ( "user_name" ),
+                        request.getParameter ( "user_lastname" ),
+                        request.getParameter ( "user_address" ),
+                        postalcode,
+                        request.getParameter ( "user_phone" ),
+                        request.getParameter ( "user_email" ),
+                        request.getParameter ( "new_password" ),
+                        request.getParameter ( "user_status" ),
+                        request.getParameter ( "user_id" )
+                    };
+                }
+                else
+                {
+                    update = "UPDATE Users "
+                            + "SET Name = ?, LastName = ?, Address = ?, PostalCode = ?, Phone = ?, Email = ?, Active = ? "
+                            + "WHERE Id = ?";
+
+                    update_args = new Object[]
+                    {
+                        request.getParameter ( "user_name" ),
+                        request.getParameter ( "user_lastname" ),
+                        request.getParameter ( "user_address" ),
+                        postalcode,
+                        request.getParameter ( "user_phone" ),
+                        request.getParameter ( "user_email" ),
+                        request.getParameter ( "user_status" ),
+                        request.getParameter ( "user_id" )
+                    };
+                }
+                db.ExecUpdate ( update, update_args );
+            }
+        }
+        else
+        {
+            passwordMatch = false;
+        }
+
+        db.CloseConnection ();
+
+        if ( passwordMatch )
+        {
+            try
+            {
+                response.sendRedirect ( "main?section=AdminUsers" );
+            }
+            catch ( IOException ex )
+            {
+                Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+            }
+        }
+        else
+        {
+            RequestDispatcher rd = null;
+            request.setAttribute ( "invalid_new_password", true );
+            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_user_info.jsp" );
+            rd.forward ( request, response );
+        }
     }
 }

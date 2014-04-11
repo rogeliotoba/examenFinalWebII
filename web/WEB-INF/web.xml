@@ -48,6 +48,10 @@
         <servlet-name>realizarCompra</servlet-name>
         <servlet-class>app.realizarCompra</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>mostrarCompra</servlet-name>
+        <servlet-class>app.mostrarCompra</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>realizarCompra</servlet-name>
         <url-pattern>/realizarCompra</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>mostrarCompra</servlet-name>
+        <url-pattern>/mostrarCompra</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

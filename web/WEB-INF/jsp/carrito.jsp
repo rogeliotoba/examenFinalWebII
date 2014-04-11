@@ -46,7 +46,8 @@
                         </c:forEach>
                     </tbody>
                 </table>
-                <button>Realizar compra</button>
+                
+                <button onClick="window.location.href = '/examenFinalWebII/realizarCompra?userId=${sessionScope.user_id}' ">Realizar compra</button>
             </div>
         </div>
     </body>

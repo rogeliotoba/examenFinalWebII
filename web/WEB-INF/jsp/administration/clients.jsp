@@ -22,6 +22,36 @@
                 <div id="departmentContent">
                     <h2>Clientes</h2>
                     <hr>
+                    <table border="1">
+                        <tr>
+                            <td><b>Id</b></td>
+                            <td><b>Nombre</b></td>
+                            <td><b>Domicilio</b></td>
+                            <td><b>E-Mail</b></td>
+                            <td><b>Usuario</b></td>
+                            <td><b>Estatus</b></td>
+                            <td><b>Acciones</b></td>
+                        </tr> 
+                        <c:forEach var="object" items="${clients}">
+                            <tr>
+                                <td><c:out value="${object.id}"/></td>
+                                <td><c:out value="${object.name} ${object.lastName}"/></td>
+                                <td><c:out value="${object.address}"/></td>
+                                <td><c:out value="${object.email}"/></td>
+                                <td><c:out value="${object.username}"/></td>
+                                <c:choose>
+                                    <c:when test="${true == object.active}">
+                                        <td style="color: green;">Activo</td>
+                                        <td><a href="main?section=Clients&Inactive=${object.id}">Baja</a></td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td style="color: red;">Inactivo</td>
+                                        <td><a href="main?section=Clients&Active=${object.id}">Alta</a></td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
             </div>
         </div>

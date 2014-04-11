@@ -32,7 +32,8 @@
                             <td><b>E-Mail</b></td>
                             <td><b>Telefono</b></td>
                             <td><b>Usuario</b></td>
-                            <td><b>Editar</b></td>
+                            <td><b>Estatus</b></td>
+                            <td><b>Acciones</b></td>
                         </tr>
                         <c:forEach var="object" items="${users}">
                             <tr>
@@ -41,6 +42,16 @@
                                 <td><c:out value="${object.email}"/></td>
                                 <td><c:out value="${object.phone}"/></td>
                                 <td><c:out value="${object.username}"/></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${true == object.active}">
+                                            Activo
+                                        </c:when>
+                                        <c:otherwise>
+                                            Inactivo
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td><a href="main?section=AdminUsers&edit=${object.id}">Editar</a></td>
                             </tr>
                         </c:forEach>

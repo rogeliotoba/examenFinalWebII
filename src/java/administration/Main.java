@@ -115,8 +115,18 @@ public class Main extends HttpServlet
                             break;
 
                         case "Clients":
-                            foward = true;
-                            rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/clients.jsp" );
+                            if ( request.getParameter ( "Active" ) != null || request.getParameter ( "Inactive" ) != null )
+                            {
+                                ClientStatus ( request, response );
+                                foward = false;
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/client_info.jsp" );
+                            }
+                            else
+                            {
+                                Clients ( request, response );
+                                foward = true;
+                                rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/clients.jsp" );
+                            }
                             break;
 
                         case "AdminUsers":
@@ -732,5 +742,69 @@ public class Main extends HttpServlet
             rd = request.getRequestDispatcher ( "../WEB-INF/jsp/administration/admin_user_info.jsp" );
             rd.forward ( request, response );
         }
+    }
+
+    private void ClientStatus ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String id;
+        String query;
+
+        if ( request.getParameter ( "Active" ) != null )
+        {
+            id = request.getParameter ( "Active" );
+            query = "UPDATE Users "
+                    + "SET Active = 1 "
+                    + "Where Id = ? AND Rol = 2";
+        }
+        else
+        {
+            id = request.getParameter ( "Inactive" );
+            query = "UPDATE Users "
+                    + "SET Active = 0 "
+                    + "Where Id = ? AND Rol = 2";
+        }
+        db.ExecUpdate ( query, new Object[]
+        {
+            Integer.parseInt ( id )
+        } );
+
+        db.CloseConnection ();
+
+        try
+        {
+            response.sendRedirect ( "main?section=Clients" );
+        }
+        catch ( IOException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
+    }
+
+    private void Clients ( HttpServletRequest request, HttpServletResponse response )
+    {
+        Database db = new Database ();
+        String query;
+        ResultSet rs = null;
+        List<User> clients = new ArrayList<> ();
+
+        query = "SELECT * FROM Users WHERE Rol = 2";
+        rs = db.ExecQuery ( query, null );
+
+        try
+        {
+            while ( rs.next () )
+            {
+                User tmp = new User ( rs.getInt ( "id" ), rs.getString ( "name" ), rs.getString ( "lastname" ), rs.getString ( "address" ), rs.getInt ( "postalcode" ), rs.getString ( "phone" ), rs.getString ( "email" ), rs.getString ( "username" ), rs.getString ( "password" ), rs.getInt ( "rol" ) );
+                tmp.setActive ( rs.getBoolean ( "Active" ) );
+                clients.add ( tmp );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            Logger.getLogger ( Main.class.getName () ).log ( Level.SEVERE, null, ex );
+        }
+        db.CloseConnection ();
+        request.setAttribute ( "clients", clients );
     }
 }

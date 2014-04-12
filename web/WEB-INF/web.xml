@@ -52,6 +52,10 @@
         <servlet-name>mostrarCompra</servlet-name>
         <servlet-class>app.mostrarCompra</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>misCompras</servlet-name>
+        <servlet-class>app.misCompras</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
         <url-pattern>/main</url-pattern>
@@ -103,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>mostrarCompra</servlet-name>
         <url-pattern>/mostrarCompra</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>misCompras</servlet-name>
+        <url-pattern>/misCompras</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

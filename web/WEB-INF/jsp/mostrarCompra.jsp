@@ -17,7 +17,7 @@
        <div id="main_container">
             <%@include file="../include/header.jsp" %>
             <div id="main_content">
-                <iframe style="width:100%;height: 50%;" src="/examenFinalWebII/GenerarPDF?Sale=${param.Sale}"></iframe>
+                <iframe style="width:100%;height: 100%;" src="/examenFinalWebII/GenerarPDF?Sale=${param.Sale}"></iframe>
             </div>
        </div>
     </body>

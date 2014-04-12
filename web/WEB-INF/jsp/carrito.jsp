@@ -38,9 +38,9 @@
                             <td><img src="img/products/${product.imageUrl}" alt="<c:out value="${product.name}" />" /></td>
                             <td><c:out value="${product.name}" /></td>
                             <td><c:out value="${product.description}" /></td>
-                            <td>$2,500.00</td>
+                            <td><c:out value="${product.price}" /></td>
                             <td><c:out value="${product.cantidad}" /></td>
-                            <td>$<c:out value="${product.price}" /></td>
+                            <td>$<c:out value="${product.price*product.cantidad}" /></td>
                             <td><a href="eliminarCarrito?userId=${sessionScope.user_id}&productId=${product.id}">Eliminar</a></td>
                             </tr>
                         </c:forEach>

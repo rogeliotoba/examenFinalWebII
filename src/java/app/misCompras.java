@@ -6,10 +6,19 @@ package app;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.Sale;
 
 /**
  *
@@ -29,21 +38,31 @@ public class misCompras extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet misCompras</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet misCompras at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
+        HttpSession session = request.getSession(false);
+        
+        if(session!=null&&session.getAttribute("logged_in")!=null)
+        {
+           Database db = new Database();
+                
+           ResultSet rs = db.ExecQuery("Select * from sales where UserId = ?", new Object[]{session.getAttribute("user_id")});
+                
+           List<Sale> sales = new ArrayList();
+                
+            try {
+                while(rs.next())
+                {
+                    sales.add(new Sale(rs.getInt("id"), rs.getInt("UserId"), rs.getFloat("TotalAmount") ));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(misCompras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            request.setAttribute("sales", sales);
+            
+            db.CloseConnection();
+            
+            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/misCompras.jsp");
+            rd.forward(request, response);
         }
     }
 

@@ -54,6 +54,7 @@
                 <c:if test="${empty products}">
                     <p>Ningún producto en el carrito</p>
                 </c:if>
+                <a href="misCompras">Mis compras</a>
             </div>
         </div>
     </body>

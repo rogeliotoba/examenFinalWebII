@@ -12,6 +12,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.xmp.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -60,21 +61,21 @@ public class GenerarPDF extends HttpServlet
         };
         java.util.List<String[]> purchasedProduct = new ArrayList<String[]> ();
         String[] saleInfo = new String[ 14 ];
-        
+
         df.setMaximumFractionDigits ( 2 );
-        
+
         queryPurchasedProducts = " SELECT P.Id, P.Name, D.AmountProduct, D.PurchasePrice FROM Sales S\n"
                 + " INNER JOIN DetailSales D ON D.SaleId = S.Id\n"
                 + " INNER JOIN Products P ON P.Id = D.ProductId\n"
                 + " WHERE S.Id = ?";
-        
+
         querySaleInfo = "SELECT * FROM Sales S\n"
                 + "INNER JOIN Users U ON S.UserId = U.Id\n"
                 + "WHERE S.Id = ?";
-        
+
         rsPurchasedProducts = db.ExecQuery ( queryPurchasedProducts, args );
         rsSaleInfo = db.ExecQuery ( querySaleInfo, args );
-        
+
         try
         {
             while ( rsPurchasedProducts.next () )
@@ -88,7 +89,7 @@ public class GenerarPDF extends HttpServlet
                 };
                 purchasedProduct.add ( products );
             }
-            
+
             while ( rsSaleInfo.next () )
             {
                 for ( int i = 0; i < 14; i++ )
@@ -103,16 +104,16 @@ public class GenerarPDF extends HttpServlet
             db.CloseConnection ();
         }
         db.CloseConnection ();
-        
+
         HttpSession session = request.getSession ();
         try
         {
             OutputStream file = new FileOutputStream ( new File ( "" + session.getServletContext ().getRealPath ( "reporte/reporteCompra2.pdf" ) ) );
-            
+
             Document document = new Document ();
             PdfWriter.getInstance ( document, file );
             document.open ();
-            
+
             document.add ( new Paragraph ( "COMPRA: " + saleInfo[0] ) );
             document.add ( new Paragraph ( "CLIENTE: " + saleInfo[4] + " " + saleInfo[5] ) );
             document.add ( new Paragraph ( "DOMICILIO: " + saleInfo[6] + " CP " + saleInfo[7] ) );
@@ -122,7 +123,7 @@ public class GenerarPDF extends HttpServlet
             document.add ( new Paragraph ( "TOTAL DE COMPRA: $ " + df.format ( Double.parseDouble ( saleInfo[2] ) ) ) );
             document.add ( new Paragraph ( "DETALLE: " ) );
             document.add ( new Paragraph ( " " ) );
-            
+
             PdfPTable table = new PdfPTable ( 4 );
             table.addCell ( "Codigo de Producto" );
             table.addCell ( "Producto" );
@@ -143,10 +144,10 @@ public class GenerarPDF extends HttpServlet
                 }
             }
             document.add ( table );
-            
+
             document.close ();
             file.close ();
-            
+
             response.sendRedirect ( "reporte/reporteCompra2.pdf" );
         }
         catch ( Exception e )
